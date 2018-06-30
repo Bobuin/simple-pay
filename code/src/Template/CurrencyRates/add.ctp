@@ -8,8 +8,8 @@
     <ul class="side-nav">
         <li class="heading"><?= __('Actions') ?></li>
         <li><?= $this->Html->link(__('List Currency Rates'), ['action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('List Currency'), ['controller' => 'Currency', 'action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('New Currency'), ['controller' => 'Currency', 'action' => 'add']) ?></li>
+        <li><?= $this->Html->link(__('List Currencies'), ['controller' => 'Currencies', 'action' => 'index']) ?></li>
+        <li><?= $this->Html->link(__('New Currency'), ['controller' => 'Currencies', 'action' => 'add']) ?></li>
     </ul>
 </nav>
 <div class="currencyRates form large-9 medium-8 columns content">
@@ -17,7 +17,7 @@
     <fieldset>
         <legend><?= __('Add Currency Rate') ?></legend>
         <?php
-            echo $this->Form->control('currency_id', ['options' => $currency]);
+            echo $this->Form->control('currency_id', ['options' => $currencies]);
             echo $this->Form->control('rate');
         ?>
     </fieldset>

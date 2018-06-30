@@ -1,7 +1,10 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Model\Table;
 
-use Cake\ORM\Query;
+use App\Model\Entity\User;
+use Cake\Datasource\EntityInterface;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
@@ -11,14 +14,14 @@ use Cake\Validation\Validator;
  *
  * @property \App\Model\Table\WalletsTable|\Cake\ORM\Association\BelongsTo $Wallets
  *
- * @method \App\Model\Entity\User get($primaryKey, $options = [])
- * @method \App\Model\Entity\User newEntity($data = null, array $options = [])
- * @method \App\Model\Entity\User[] newEntities(array $data, array $options = [])
- * @method \App\Model\Entity\User|bool save(\Cake\Datasource\EntityInterface $entity, $options = [])
- * @method \App\Model\Entity\User|bool saveOrFail(\Cake\Datasource\EntityInterface $entity, $options = [])
- * @method \App\Model\Entity\User patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
- * @method \App\Model\Entity\User[] patchEntities($entities, array $data, array $options = [])
- * @method \App\Model\Entity\User findOrCreate($search, callable $callback = null, $options = [])
+ * @method User get($primaryKey, $options = [])
+ * @method User newEntity($data = null, array $options = [])
+ * @method User[] newEntities(array $data, array $options = [])
+ * @method User|bool save(EntityInterface $entity, $options = [])
+ * @method User|bool saveOrFail(EntityInterface $entity, $options = [])
+ * @method User patchEntity(EntityInterface $entity, array $data, array $options = [])
+ * @method User[] patchEntities($entities, array $data, array $options = [])
+ * @method User findOrCreate($search, callable $callback = null, $options = [])
  */
 class UsersTable extends Table
 {
@@ -27,6 +30,7 @@ class UsersTable extends Table
      * Initialize method
      *
      * @param array $config The configuration for the Table.
+     *
      * @return void
      */
     public function initialize(array $config)
@@ -38,7 +42,8 @@ class UsersTable extends Table
         $this->setPrimaryKey('id');
 
         $this->belongsTo('Wallets', [
-            'foreignKey' => 'wallet_id'
+            'foreignKey' => 'wallet_id',
+            'joinType' => 'INNER'
         ]);
     }
 
@@ -46,6 +51,7 @@ class UsersTable extends Table
      * Default validation rules.
      *
      * @param \Cake\Validation\Validator $validator Validator instance.
+     *
      * @return \Cake\Validation\Validator
      */
     public function validationDefault(Validator $validator)
@@ -55,19 +61,23 @@ class UsersTable extends Table
             ->allowEmpty('id', 'create');
 
         $validator
+            ->integer('id')
+            ->requirePresence('wallet_id', 'create');
+
+        $validator
             ->scalar('name')
             ->maxLength('name', 255)
-            ->allowEmpty('name');
+            ->requirePresence('name', 'create');
 
         $validator
             ->scalar('country')
             ->maxLength('country', 255)
-            ->allowEmpty('country');
+            ->requirePresence('country', 'create');
 
         $validator
             ->scalar('city')
             ->maxLength('city', 255)
-            ->allowEmpty('city');
+            ->requirePresence('city', 'create');
 
         return $validator;
     }
@@ -77,6 +87,7 @@ class UsersTable extends Table
      * application integrity.
      *
      * @param \Cake\ORM\RulesChecker $rules The rules object to be modified.
+     *
      * @return \Cake\ORM\RulesChecker
      */
     public function buildRules(RulesChecker $rules)

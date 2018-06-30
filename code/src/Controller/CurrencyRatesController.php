@@ -21,7 +21,7 @@ class CurrencyRatesController extends AppController
     public function index()
     {
         $this->paginate = [
-            'contain' => ['Currency']
+            'contain' => ['Currencies']
         ];
         $currencyRates = $this->paginate($this->CurrencyRates);
 
@@ -38,7 +38,7 @@ class CurrencyRatesController extends AppController
     public function view($id = null)
     {
         $currencyRate = $this->CurrencyRates->get($id, [
-            'contain' => ['Currency']
+            'contain' => ['Currencies']
         ]);
 
         $this->set('currencyRate', $currencyRate);
@@ -53,7 +53,9 @@ class CurrencyRatesController extends AppController
     {
         $currencyRate = $this->CurrencyRates->newEntity();
         if ($this->request->is('post')) {
-            $currencyRate = $this->CurrencyRates->patchEntity($currencyRate, $this->request->getData());
+            /** @var array $data */
+            $data = $this->request->getData();
+            $currencyRate = $this->CurrencyRates->patchEntity($currencyRate, $data);
             if ($this->CurrencyRates->save($currencyRate)) {
                 $this->Flash->success(__('The currency rate has been saved.'));
 
@@ -61,8 +63,8 @@ class CurrencyRatesController extends AppController
             }
             $this->Flash->error(__('The currency rate could not be saved. Please, try again.'));
         }
-        $currency = $this->CurrencyRates->Currency->find('list', ['limit' => 200]);
-        $this->set(compact('currencyRate', 'currency'));
+        $currencies = $this->CurrencyRates->Currencies->find('list', ['limit' => 200]);
+        $this->set(compact('currencyRate', 'currencies'));
     }
 
     /**
@@ -78,7 +80,9 @@ class CurrencyRatesController extends AppController
             'contain' => []
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
-            $currencyRate = $this->CurrencyRates->patchEntity($currencyRate, $this->request->getData());
+            /** @var array $data */
+            $data = $this->request->getData();
+            $currencyRate = $this->CurrencyRates->patchEntity($currencyRate, $data);
             if ($this->CurrencyRates->save($currencyRate)) {
                 $this->Flash->success(__('The currency rate has been saved.'));
 
@@ -86,8 +90,8 @@ class CurrencyRatesController extends AppController
             }
             $this->Flash->error(__('The currency rate could not be saved. Please, try again.'));
         }
-        $currency = $this->CurrencyRates->Currency->find('list', ['limit' => 200]);
-        $this->set(compact('currencyRate', 'currency'));
+        $currencies = $this->CurrencyRates->Currencies->find('list', ['limit' => 200]);
+        $this->set(compact('currencyRate', 'currencies'));
     }
 
     /**

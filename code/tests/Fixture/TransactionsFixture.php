@@ -49,7 +49,7 @@ class TransactionsFixture extends TestFixture
                 'wallet_id' => 1,
                 'amount' => 1.5,
                 'base_amount' => 1.5,
-                'created' => '2018-06-29 19:05:35'
+                'created' => '2018-06-30 05:34:38'
             ],
         ];
         parent::init();

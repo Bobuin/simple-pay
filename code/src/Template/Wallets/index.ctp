@@ -8,8 +8,8 @@
     <ul class="side-nav">
         <li class="heading"><?= __('Actions') ?></li>
         <li><?= $this->Html->link(__('New Wallet'), ['action' => 'add']) ?></li>
-        <li><?= $this->Html->link(__('List Currency'), ['controller' => 'Currency', 'action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('New Currency'), ['controller' => 'Currency', 'action' => 'add']) ?></li>
+        <li><?= $this->Html->link(__('List Currencies'), ['controller' => 'Currencies', 'action' => 'index']) ?></li>
+        <li><?= $this->Html->link(__('New Currency'), ['controller' => 'Currencies', 'action' => 'add']) ?></li>
         <li><?= $this->Html->link(__('List Transactions'), ['controller' => 'Transactions', 'action' => 'index']) ?></li>
         <li><?= $this->Html->link(__('New Transaction'), ['controller' => 'Transactions', 'action' => 'add']) ?></li>
         <li><?= $this->Html->link(__('List Users'), ['controller' => 'Users', 'action' => 'index']) ?></li>
@@ -31,7 +31,7 @@
             <?php foreach ($wallets as $wallet): ?>
             <tr>
                 <td><?= $this->Number->format($wallet->id) ?></td>
-                <td><?= $wallet->has('currency') ? $this->Html->link($wallet->currency->name, ['controller' => 'Currency', 'action' => 'view', $wallet->currency->id]) : '' ?></td>
+                <td><?= $wallet->has('currency') ? $this->Html->link($wallet->currency->name, ['controller' => 'Currencies', 'action' => 'view', $wallet->currency->id]) : '' ?></td>
                 <td><?= $this->Number->format($wallet->balance) ?></td>
                 <td class="actions">
                     <?= $this->Html->link(__('View'), ['action' => 'view', $wallet->id]) ?>

@@ -11,8 +11,8 @@
         <li><?= $this->Form->postLink(__('Delete Currency Rate'), ['action' => 'delete', $currencyRate->id], ['confirm' => __('Are you sure you want to delete # {0}?', $currencyRate->id)]) ?> </li>
         <li><?= $this->Html->link(__('List Currency Rates'), ['action' => 'index']) ?> </li>
         <li><?= $this->Html->link(__('New Currency Rate'), ['action' => 'add']) ?> </li>
-        <li><?= $this->Html->link(__('List Currency'), ['controller' => 'Currency', 'action' => 'index']) ?> </li>
-        <li><?= $this->Html->link(__('New Currency'), ['controller' => 'Currency', 'action' => 'add']) ?> </li>
+        <li><?= $this->Html->link(__('List Currencies'), ['controller' => 'Currencies', 'action' => 'index']) ?> </li>
+        <li><?= $this->Html->link(__('New Currency'), ['controller' => 'Currencies', 'action' => 'add']) ?> </li>
     </ul>
 </nav>
 <div class="currencyRates view large-9 medium-8 columns content">
@@ -20,7 +20,7 @@
     <table class="vertical-table">
         <tr>
             <th scope="row"><?= __('Currency') ?></th>
-            <td><?= $currencyRate->has('currency') ? $this->Html->link($currencyRate->currency->name, ['controller' => 'Currency', 'action' => 'view', $currencyRate->currency->id]) : '' ?></td>
+            <td><?= $currencyRate->has('currency') ? $this->Html->link($currencyRate->currency->name, ['controller' => 'Currencies', 'action' => 'view', $currencyRate->currency->id]) : '' ?></td>
         </tr>
         <tr>
             <th scope="row"><?= __('Id') ?></th>

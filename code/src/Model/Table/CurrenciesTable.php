@@ -7,7 +7,7 @@ use Cake\ORM\Table;
 use Cake\Validation\Validator;
 
 /**
- * Currency Model
+ * Currencies Model
  *
  * @property \App\Model\Table\CurrencyRatesTable|\Cake\ORM\Association\HasMany $CurrencyRates
  * @property \App\Model\Table\WalletsTable|\Cake\ORM\Association\HasMany $Wallets
@@ -21,7 +21,7 @@ use Cake\Validation\Validator;
  * @method \App\Model\Entity\Currency[] patchEntities($entities, array $data, array $options = [])
  * @method \App\Model\Entity\Currency findOrCreate($search, callable $callback = null, $options = [])
  */
-class CurrencyTable extends Table
+class CurrenciesTable extends Table
 {
 
     /**
@@ -34,7 +34,7 @@ class CurrencyTable extends Table
     {
         parent::initialize($config);
 
-        $this->setTable('currency');
+        $this->setTable('currencies');
         $this->setDisplayField('name');
         $this->setPrimaryKey('id');
 

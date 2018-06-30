@@ -9,7 +9,7 @@
         <li class="heading"><?= __('Actions') ?></li>
         <li><?= $this->Html->link(__('Edit Currency'), ['action' => 'edit', $currency->id]) ?> </li>
         <li><?= $this->Form->postLink(__('Delete Currency'), ['action' => 'delete', $currency->id], ['confirm' => __('Are you sure you want to delete # {0}?', $currency->id)]) ?> </li>
-        <li><?= $this->Html->link(__('List Currency'), ['action' => 'index']) ?> </li>
+        <li><?= $this->Html->link(__('List Currencies'), ['action' => 'index']) ?> </li>
         <li><?= $this->Html->link(__('New Currency'), ['action' => 'add']) ?> </li>
         <li><?= $this->Html->link(__('List Currency Rates'), ['controller' => 'CurrencyRates', 'action' => 'index']) ?> </li>
         <li><?= $this->Html->link(__('New Currency Rate'), ['controller' => 'CurrencyRates', 'action' => 'add']) ?> </li>
@@ -17,7 +17,7 @@
         <li><?= $this->Html->link(__('New Wallet'), ['controller' => 'Wallets', 'action' => 'add']) ?> </li>
     </ul>
 </nav>
-<div class="currency view large-9 medium-8 columns content">
+<div class="currencies view large-9 medium-8 columns content">
     <h3><?= h($currency->name) ?></h3>
     <table class="vertical-table">
         <tr>

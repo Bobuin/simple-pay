@@ -1,7 +1,9 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Controller;
 
-use App\Controller\AppController;
+use App\Logic\WalletLogic;
 
 /**
  * Wallets Controller
@@ -21,7 +23,7 @@ class WalletsController extends AppController
     public function index()
     {
         $this->paginate = [
-            'contain' => ['Currency']
+            'contain' => ['Currencies'],
         ];
         $wallets = $this->paginate($this->Wallets);
 
@@ -32,13 +34,14 @@ class WalletsController extends AppController
      * View method
      *
      * @param string|null $id Wallet id.
+     *
      * @return \Cake\Http\Response|void
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
     public function view($id = null)
     {
         $wallet = $this->Wallets->get($id, [
-            'contain' => ['Currency', 'Transactions', 'Users']
+            'contain' => ['Currencies', 'Transactions', 'Users'],
         ]);
 
         $this->set('wallet', $wallet);
@@ -53,7 +56,9 @@ class WalletsController extends AppController
     {
         $wallet = $this->Wallets->newEntity();
         if ($this->request->is('post')) {
-            $wallet = $this->Wallets->patchEntity($wallet, $this->request->getData());
+            /** @var array $data */
+            $data = $this->request->getData();
+            $wallet = $this->Wallets->patchEntity($wallet, $data);
             if ($this->Wallets->save($wallet)) {
                 $this->Flash->success(__('The wallet has been saved.'));
 
@@ -61,7 +66,7 @@ class WalletsController extends AppController
             }
             $this->Flash->error(__('The wallet could not be saved. Please, try again.'));
         }
-        $currency = $this->Wallets->Currency->find('list', ['limit' => 200]);
+        $currency = $this->Wallets->Currencies->find('list', ['limit' => 200]);
         $this->set(compact('wallet', 'currency'));
     }
 
@@ -69,16 +74,19 @@ class WalletsController extends AppController
      * Edit method
      *
      * @param string|null $id Wallet id.
+     *
      * @return \Cake\Http\Response|null Redirects on successful edit, renders view otherwise.
      * @throws \Cake\Network\Exception\NotFoundException When record not found.
      */
     public function edit($id = null)
     {
         $wallet = $this->Wallets->get($id, [
-            'contain' => []
+            'contain' => [],
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
-            $wallet = $this->Wallets->patchEntity($wallet, $this->request->getData());
+            /** @var array $data */
+            $data = $this->request->getData();
+            $wallet = $this->Wallets->patchEntity($wallet, $data);
             if ($this->Wallets->save($wallet)) {
                 $this->Flash->success(__('The wallet has been saved.'));
 
@@ -86,7 +94,7 @@ class WalletsController extends AppController
             }
             $this->Flash->error(__('The wallet could not be saved. Please, try again.'));
         }
-        $currency = $this->Wallets->Currency->find('list', ['limit' => 200]);
+        $currency = $this->Wallets->Currencies->find('list', ['limit' => 200]);
         $this->set(compact('wallet', 'currency'));
     }
 
@@ -94,6 +102,7 @@ class WalletsController extends AppController
      * Delete method
      *
      * @param string|null $id Wallet id.
+     *
      * @return \Cake\Http\Response|null Redirects to index.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
@@ -108,5 +117,41 @@ class WalletsController extends AppController
         }
 
         return $this->redirect(['action' => 'index']);
+    }
+
+    /**
+     * Add funds to Wallet method
+     *
+     * @return \Cake\Http\Response|null|void
+     */
+    public function addFunds()
+    {
+        $this->request->allowMethod('post');
+
+        /** @var array $data */
+        $data = $this->request->getData();
+
+        $wallet = (new WalletLogic())->addFunds($data);
+
+        $this->set('wallet', $wallet);
+        $this->set('_serialize', ['wallet']);
+    }
+
+    /**
+     * Transfer fund method
+     *
+     * @return \Cake\Http\Response|null|void
+     */
+    public function transfer()
+    {
+        $this->request->allowMethod('post');
+
+        /** @var array $data */
+        $data = $this->request->getData();
+
+        $wallets = (new WalletLogic())->transfer($data);
+
+        $this->set('wallets', $wallets);
+        $this->set('_serialize', ['wallets']);
     }
 }

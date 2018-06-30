@@ -1,22 +1,22 @@
 <?php
 namespace App\Test\TestCase\Model\Table;
 
-use App\Model\Table\CurrencyTable;
+use App\Model\Table\CurrenciesTable;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
 
 /**
- * App\Model\Table\CurrencyTable Test Case
+ * App\Model\Table\CurrenciesTable Test Case
  */
-class CurrencyTableTest extends TestCase
+class CurrenciesTableTest extends TestCase
 {
 
     /**
      * Test subject
      *
-     * @var \App\Model\Table\CurrencyTable
+     * @var \App\Model\Table\CurrenciesTable
      */
-    public $Currency;
+    public $Currencies;
 
     /**
      * Fixtures
@@ -24,7 +24,7 @@ class CurrencyTableTest extends TestCase
      * @var array
      */
     public $fixtures = [
-        'app.currency',
+        'app.currencies',
         'app.currency_rates',
         'app.wallets'
     ];
@@ -37,8 +37,8 @@ class CurrencyTableTest extends TestCase
     public function setUp()
     {
         parent::setUp();
-        $config = TableRegistry::getTableLocator()->exists('Currency') ? [] : ['className' => CurrencyTable::class];
-        $this->Currency = TableRegistry::getTableLocator()->get('Currency', $config);
+        $config = TableRegistry::getTableLocator()->exists('Currencies') ? [] : ['className' => CurrenciesTable::class];
+        $this->Currencies = TableRegistry::getTableLocator()->get('Currencies', $config);
     }
 
     /**
@@ -48,7 +48,7 @@ class CurrencyTableTest extends TestCase
      */
     public function tearDown()
     {
-        unset($this->Currency);
+        unset($this->Currencies);
 
         parent::tearDown();
     }

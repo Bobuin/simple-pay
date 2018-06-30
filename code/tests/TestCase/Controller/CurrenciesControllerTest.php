@@ -1,13 +1,13 @@
 <?php
 namespace App\Test\TestCase\Controller;
 
-use App\Controller\CurrencyController;
+use App\Controller\CurrenciesController;
 use Cake\TestSuite\IntegrationTestCase;
 
 /**
- * App\Controller\CurrencyController Test Case
+ * App\Controller\CurrenciesController Test Case
  */
-class CurrencyControllerTest extends IntegrationTestCase
+class CurrenciesControllerTest extends IntegrationTestCase
 {
 
     /**
@@ -16,7 +16,7 @@ class CurrencyControllerTest extends IntegrationTestCase
      * @var array
      */
     public $fixtures = [
-        'app.currency',
+        'app.currencies',
         'app.currency_rates',
         'app.wallets'
     ];

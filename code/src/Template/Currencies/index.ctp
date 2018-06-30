@@ -1,7 +1,7 @@
 <?php
 /**
  * @var \App\View\AppView $this
- * @var \App\Model\Entity\Currency[]|\Cake\Collection\CollectionInterface $currency
+ * @var \App\Model\Entity\Currency[]|\Cake\Collection\CollectionInterface $currencies
  */
 ?>
 <nav class="large-3 medium-4 columns" id="actions-sidebar">
@@ -14,8 +14,8 @@
         <li><?= $this->Html->link(__('New Wallet'), ['controller' => 'Wallets', 'action' => 'add']) ?></li>
     </ul>
 </nav>
-<div class="currency index large-9 medium-8 columns content">
-    <h3><?= __('Currency') ?></h3>
+<div class="currencies index large-9 medium-8 columns content">
+    <h3><?= __('Currencies') ?></h3>
     <table cellpadding="0" cellspacing="0">
         <thead>
             <tr>
@@ -26,7 +26,7 @@
             </tr>
         </thead>
         <tbody>
-            <?php foreach ($currency as $currency): ?>
+            <?php foreach ($currencies as $currency): ?>
             <tr>
                 <td><?= $this->Number->format($currency->id) ?></td>
                 <td><?= h($currency->code) ?></td>

@@ -8,8 +8,8 @@
     <ul class="side-nav">
         <li class="heading"><?= __('Actions') ?></li>
         <li><?= $this->Html->link(__('New Currency Rate'), ['action' => 'add']) ?></li>
-        <li><?= $this->Html->link(__('List Currency'), ['controller' => 'Currency', 'action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('New Currency'), ['controller' => 'Currency', 'action' => 'add']) ?></li>
+        <li><?= $this->Html->link(__('List Currencies'), ['controller' => 'Currencies', 'action' => 'index']) ?></li>
+        <li><?= $this->Html->link(__('New Currency'), ['controller' => 'Currencies', 'action' => 'add']) ?></li>
     </ul>
 </nav>
 <div class="currencyRates index large-9 medium-8 columns content">
@@ -28,7 +28,7 @@
             <?php foreach ($currencyRates as $currencyRate): ?>
             <tr>
                 <td><?= $this->Number->format($currencyRate->id) ?></td>
-                <td><?= $currencyRate->has('currency') ? $this->Html->link($currencyRate->currency->name, ['controller' => 'Currency', 'action' => 'view', $currencyRate->currency->id]) : '' ?></td>
+                <td><?= $currencyRate->has('currency') ? $this->Html->link($currencyRate->currency->name, ['controller' => 'Currencies', 'action' => 'view', $currencyRate->currency->id]) : '' ?></td>
                 <td><?= $this->Number->format($currencyRate->rate) ?></td>
                 <td><?= h($currencyRate->created) ?></td>
                 <td class="actions">

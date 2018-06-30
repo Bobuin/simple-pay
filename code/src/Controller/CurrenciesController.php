@@ -1,16 +1,19 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Controller;
 
-use App\Controller\AppController;
+use App\Model\Entity\Currency;
+use Cake\Datasource\ResultSetInterface;
 
 /**
- * Currency Controller
+ * Currencies Controller
  *
- * @property \App\Model\Table\CurrencyTable $Currency
+ * @property \App\Model\Table\CurrenciesTable $Currencies
  *
- * @method \App\Model\Entity\Currency[]|\Cake\Datasource\ResultSetInterface paginate($object = null, array $settings = [])
+ * @method Currency[]|ResultSetInterface paginate($object = null, array $settings = [])
  */
-class CurrencyController extends AppController
+class CurrenciesController extends AppController
 {
 
     /**
@@ -20,21 +23,22 @@ class CurrencyController extends AppController
      */
     public function index()
     {
-        $currency = $this->paginate($this->Currency);
+        $currencies = $this->paginate($this->Currencies);
 
-        $this->set(compact('currency'));
+        $this->set(compact('currencies'));
     }
 
     /**
      * View method
      *
      * @param string|null $id Currency id.
+     *
      * @return \Cake\Http\Response|void
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
     public function view($id = null)
     {
-        $currency = $this->Currency->get($id, [
+        $currency = $this->Currencies->get($id, [
             'contain' => ['CurrencyRates', 'Wallets']
         ]);
 
@@ -48,10 +52,12 @@ class CurrencyController extends AppController
      */
     public function add()
     {
-        $currency = $this->Currency->newEntity();
+        $currency = $this->Currencies->newEntity();
         if ($this->request->is('post')) {
-            $currency = $this->Currency->patchEntity($currency, $this->request->getData());
-            if ($this->Currency->save($currency)) {
+            /** @var array $data */
+            $data = $this->request->getData();
+            $currency = $this->Currencies->patchEntity($currency, $data);
+            if ($this->Currencies->save($currency)) {
                 $this->Flash->success(__('The currency has been saved.'));
 
                 return $this->redirect(['action' => 'index']);
@@ -65,17 +71,20 @@ class CurrencyController extends AppController
      * Edit method
      *
      * @param string|null $id Currency id.
+     *
      * @return \Cake\Http\Response|null Redirects on successful edit, renders view otherwise.
      * @throws \Cake\Network\Exception\NotFoundException When record not found.
      */
     public function edit($id = null)
     {
-        $currency = $this->Currency->get($id, [
+        $currency = $this->Currencies->get($id, [
             'contain' => []
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
-            $currency = $this->Currency->patchEntity($currency, $this->request->getData());
-            if ($this->Currency->save($currency)) {
+            /** @var array $data */
+            $data = $this->request->getData();
+            $currency = $this->Currencies->patchEntity($currency, $data);
+            if ($this->Currencies->save($currency)) {
                 $this->Flash->success(__('The currency has been saved.'));
 
                 return $this->redirect(['action' => 'index']);
@@ -89,14 +98,15 @@ class CurrencyController extends AppController
      * Delete method
      *
      * @param string|null $id Currency id.
+     *
      * @return \Cake\Http\Response|null Redirects to index.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
     public function delete($id = null)
     {
         $this->request->allowMethod(['post', 'delete']);
-        $currency = $this->Currency->get($id);
-        if ($this->Currency->delete($currency)) {
+        $currency = $this->Currencies->get($id);
+        if ($this->Currencies->delete($currency)) {
             $this->Flash->success(__('The currency has been deleted.'));
         } else {
             $this->Flash->error(__('The currency could not be deleted. Please, try again.'));

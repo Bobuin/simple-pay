@@ -17,7 +17,7 @@ class CurrencyRatesControllerTest extends IntegrationTestCase
      */
     public $fixtures = [
         'app.currency_rates',
-        'app.currency'
+        'app.currencies'
     ];
 
     /**

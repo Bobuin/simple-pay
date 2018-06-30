@@ -13,7 +13,7 @@ class Simplepay extends AbstractMigration
      */
     public function up(): void
     {
-        $this->table('currency')
+        $this->table('currencies')
             ->addColumn('code', 'string', [
                 'default' => null,
                 'limit' => 3,
@@ -129,7 +129,7 @@ class Simplepay extends AbstractMigration
         $this->table('currency_rates')
             ->addForeignKey(
                 'currency_id',
-                'currency',
+                'currencies',
                 'id',
                 [
                     'update' => 'NO_ACTION',
@@ -165,7 +165,7 @@ class Simplepay extends AbstractMigration
         $this->table('wallets')
             ->addForeignKey(
                 'currency_id',
-                'currency',
+                'currencies',
                 'id',
                 [
                     'update' => 'NO_ACTION',
@@ -201,7 +201,7 @@ class Simplepay extends AbstractMigration
                 'currency_id'
             );
 
-        $this->dropTable('currency');
+        $this->dropTable('currencies');
         $this->dropTable('currency_rates');
         $this->dropTable('transactions');
         $this->dropTable('users');

@@ -4,18 +4,11 @@ namespace App\Test\Fixture;
 use Cake\TestSuite\Fixture\TestFixture;
 
 /**
- * CurrencyFixture
+ * CurrenciesFixture
  *
  */
-class CurrencyFixture extends TestFixture
+class CurrenciesFixture extends TestFixture
 {
-
-    /**
-     * Table name
-     *
-     * @var string
-     */
-    public $table = 'currency';
 
     /**
      * Fields

@@ -26,7 +26,7 @@ class CurrencyRatesFixture extends TestFixture
         ],
         '_constraints' => [
             'primary' => ['type' => 'primary', 'columns' => ['id'], 'length' => []],
-            'currency_rates_ibfk_1' => ['type' => 'foreign', 'columns' => ['currency_id'], 'references' => ['currency', 'id'], 'update' => 'noAction', 'delete' => 'noAction', 'length' => []],
+            'currency_rates_ibfk_1' => ['type' => 'foreign', 'columns' => ['currency_id'], 'references' => ['currencies', 'id'], 'update' => 'noAction', 'delete' => 'noAction', 'length' => []],
         ],
         '_options' => [
             'engine' => 'InnoDB',
@@ -47,7 +47,7 @@ class CurrencyRatesFixture extends TestFixture
                 'id' => 1,
                 'currency_id' => 1,
                 'rate' => 1,
-                'created' => '2018-06-29 19:05:35'
+                'created' => '2018-06-30 05:34:36'
             ],
         ];
         parent::init();

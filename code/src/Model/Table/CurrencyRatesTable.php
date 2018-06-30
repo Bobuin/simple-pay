@@ -9,7 +9,7 @@ use Cake\Validation\Validator;
 /**
  * CurrencyRates Model
  *
- * @property \App\Model\Table\CurrencyTable|\Cake\ORM\Association\BelongsTo $Currency
+ * @property \App\Model\Table\CurrenciesTable|\Cake\ORM\Association\BelongsTo $Currencies
  *
  * @method \App\Model\Entity\CurrencyRate get($primaryKey, $options = [])
  * @method \App\Model\Entity\CurrencyRate newEntity($data = null, array $options = [])
@@ -41,7 +41,7 @@ class CurrencyRatesTable extends Table
 
         $this->addBehavior('Timestamp');
 
-        $this->belongsTo('Currency', [
+        $this->belongsTo('Currencies', [
             'foreignKey' => 'currency_id',
             'joinType' => 'INNER'
         ]);
@@ -75,7 +75,7 @@ class CurrencyRatesTable extends Table
      */
     public function buildRules(RulesChecker $rules)
     {
-        $rules->add($rules->existsIn(['currency_id'], 'Currency'));
+        $rules->add($rules->existsIn(['currency_id'], 'Currencies'));
 
         return $rules;
     }

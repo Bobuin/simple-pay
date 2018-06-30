@@ -25,7 +25,7 @@ class CurrencyRatesTableTest extends TestCase
      */
     public $fixtures = [
         'app.currency_rates',
-        'app.currency'
+        'app.currencies'
     ];
 
     /**

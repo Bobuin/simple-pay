@@ -1,7 +1,9 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Controller;
 
-use App\Controller\AppController;
+use App\Logic\UserLogic;
 
 /**
  * Users Controller
@@ -21,17 +23,19 @@ class UsersController extends AppController
     public function index()
     {
         $this->paginate = [
-            'contain' => ['Wallets']
+            'contain' => ['Wallets', 'Wallets.Currencies']
         ];
         $users = $this->paginate($this->Users);
 
         $this->set(compact('users'));
+        $this->set('_serialize', ['users']);
     }
 
     /**
      * View method
      *
      * @param string|null $id User id.
+     *
      * @return \Cake\Http\Response|void
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
@@ -42,33 +46,32 @@ class UsersController extends AppController
         ]);
 
         $this->set('user', $user);
+        $this->set('_serialize', ['user']);
     }
 
     /**
      * Add method
      *
-     * @return \Cake\Http\Response|null Redirects on successful add, renders view otherwise.
+     * @return \Cake\Http\Response|null|void Redirects on successful add, renders view otherwise.
+     * @throws \Cake\Http\Exception\BadRequestException
      */
     public function add()
     {
-        $user = $this->Users->newEntity();
-        if ($this->request->is('post')) {
-            $user = $this->Users->patchEntity($user, $this->request->getData());
-            if ($this->Users->save($user)) {
-                $this->Flash->success(__('The user has been saved.'));
+        $this->request->allowMethod('post');
 
-                return $this->redirect(['action' => 'index']);
-            }
-            $this->Flash->error(__('The user could not be saved. Please, try again.'));
-        }
-        $wallets = $this->Users->Wallets->find('list', ['limit' => 200]);
-        $this->set(compact('user', 'wallets'));
+        $userData = $this->request->getData();
+
+        $user = (new UserLogic())->createNewUser($userData);
+
+        $this->set(compact('user'));
+        $this->set('_serialize', ['user']);
     }
 
     /**
      * Edit method
      *
      * @param string|null $id User id.
+     *
      * @return \Cake\Http\Response|null Redirects on successful edit, renders view otherwise.
      * @throws \Cake\Network\Exception\NotFoundException When record not found.
      */
@@ -78,7 +81,9 @@ class UsersController extends AppController
             'contain' => []
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
-            $user = $this->Users->patchEntity($user, $this->request->getData());
+            /** @var array $data */
+            $data = $this->request->getData();
+            $user = $this->Users->patchEntity($user, $data);
             if ($this->Users->save($user)) {
                 $this->Flash->success(__('The user has been saved.'));
 
@@ -94,6 +99,7 @@ class UsersController extends AppController
      * Delete method
      *
      * @param string|null $id User id.
+     *
      * @return \Cake\Http\Response|null Redirects to index.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */

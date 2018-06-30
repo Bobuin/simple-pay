@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 /**
  * Routes configuration
  *
@@ -18,7 +20,6 @@
  * @license       https://opensource.org/licenses/mit-license.php MIT License
  */
 
-use Cake\Core\Plugin;
 use Cake\Routing\RouteBuilder;
 use Cake\Routing\Router;
 use Cake\Routing\Route\DashedRoute;
@@ -46,6 +47,14 @@ use Cake\Routing\Route\DashedRoute;
  */
 Router::defaultRouteClass(DashedRoute::class);
 
+const API_RESOURCES = [
+    'Currencies',
+    'CurrencyRates',
+    'Transactions',
+    'Users',
+    'Wallets',
+];
+
 Router::scope('/', function (RouteBuilder $routes) {
     /**
      * Here, we are connecting '/' (base path) to a controller called 'Pages',
@@ -58,6 +67,12 @@ Router::scope('/', function (RouteBuilder $routes) {
      * ...and connect the rest of 'Pages' controller's URLs.
      */
     $routes->connect('/pages/*', ['controller' => 'Pages', 'action' => 'display']);
+
+    foreach (API_RESOURCES as $apiResource) {
+        $routes->resources($apiResource, [
+            'inflect' => 'dasherize'
+        ]);
+    }
 
     /**
      * Connect catchall routes for all controllers.
