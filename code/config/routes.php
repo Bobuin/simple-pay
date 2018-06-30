@@ -20,9 +20,9 @@ declare(strict_types=1);
  * @license       https://opensource.org/licenses/mit-license.php MIT License
  */
 
+use Cake\Routing\Route\DashedRoute;
 use Cake\Routing\RouteBuilder;
 use Cake\Routing\Router;
-use Cake\Routing\Route\DashedRoute;
 
 /**
  * The default class to use for all routes
@@ -70,9 +70,29 @@ Router::scope('/', function (RouteBuilder $routes) {
 
     foreach ($apiResources as $apiResource) {
         $routes->resources($apiResource, [
-            'inflect' => 'dasherize'
+            'inflect' => 'dasherize',
         ]);
     }
+
+    $routes->connect(
+        '/reports/:userId',
+        [
+            'controller' => 'Transactions',
+            'action' => 'report',
+        ]
+    )
+        ->setPass(['userId'])
+        ->setPatterns(['userId' => '\d+']);
+
+    $routes->connect(
+        '/reports/download/:userId',
+        [
+            'controller' => 'Transactions',
+            'action' => 'download',
+        ]
+    )
+        ->setPass(['userId'])
+        ->setPatterns(['userId' => '\d+']);
 
     /**
      * Connect catchall routes for all controllers.

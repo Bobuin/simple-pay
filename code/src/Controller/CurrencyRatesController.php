@@ -30,6 +30,7 @@ class CurrencyRatesController extends AppController
         $currencyRates = $this->paginate($this->CurrencyRates);
 
         $this->set(compact('currencyRates'));
+        $this->set('_serialize', ['currencyRates']);
     }
 
     /**
@@ -52,7 +53,7 @@ class CurrencyRatesController extends AppController
     /**
      * Add method
      *
-     * @return \Cake\Http\Response|null|void Redirects on successful add, renders view otherwise.
+     * @return \Cake\Http\Response|null|void
      * @throws \Cake\Http\Exception\BadRequestException
      * @throws \Cake\Http\Exception\MethodNotAllowedException
      */

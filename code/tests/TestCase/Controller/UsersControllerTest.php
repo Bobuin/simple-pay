@@ -1,7 +1,8 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Test\TestCase\Controller;
 
-use App\Controller\UsersController;
 use Cake\TestSuite\IntegrationTestCase;
 
 /**
@@ -17,17 +18,30 @@ class UsersControllerTest extends IntegrationTestCase
      */
     public $fixtures = [
         'app.users',
-        'app.wallets'
+        'app.currency_rates',
+        'app.currencies',
+        'app.wallets',
     ];
 
     /**
      * Test index method
      *
      * @return void
+     * @throws \PHPUnit\Exception
      */
-    public function testIndex()
+    public function testIndex(): void
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $this->configRequest([
+            'headers' => [
+                'Accept' => 'application/json',
+                'Content-Type' => 'application/json',
+            ],
+        ]);
+
+        $this->get('/users');
+
+        $this->assertResponseOk();
+        $this->assertResponseCode(200);
     }
 
     /**
@@ -35,7 +49,7 @@ class UsersControllerTest extends IntegrationTestCase
      *
      * @return void
      */
-    public function testView()
+    public function testView(): void
     {
         $this->markTestIncomplete('Not implemented yet.');
     }
@@ -45,7 +59,7 @@ class UsersControllerTest extends IntegrationTestCase
      *
      * @return void
      */
-    public function testAdd()
+    public function testAdd(): void
     {
         $this->markTestIncomplete('Not implemented yet.');
     }
@@ -55,7 +69,7 @@ class UsersControllerTest extends IntegrationTestCase
      *
      * @return void
      */
-    public function testEdit()
+    public function testEdit(): void
     {
         $this->markTestIncomplete('Not implemented yet.');
     }
@@ -65,7 +79,7 @@ class UsersControllerTest extends IntegrationTestCase
      *
      * @return void
      */
-    public function testDelete()
+    public function testDelete(): void
     {
         $this->markTestIncomplete('Not implemented yet.');
     }

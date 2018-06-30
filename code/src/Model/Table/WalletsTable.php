@@ -50,8 +50,9 @@ class WalletsTable extends Table
         $this->hasMany('Transactions', [
             'foreignKey' => 'wallet_id',
         ]);
-        $this->hasMany('Users', [
-            'foreignKey' => 'wallet_id',
+        $this->belongsTo('Users', [
+            'foreignKey' => 'id',
+            'bindingKey' => 'wallet_id',
         ]);
     }
 

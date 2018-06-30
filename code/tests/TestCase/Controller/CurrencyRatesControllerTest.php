@@ -1,7 +1,8 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Test\TestCase\Controller;
 
-use App\Controller\CurrencyRatesController;
 use Cake\TestSuite\IntegrationTestCase;
 
 /**
@@ -17,17 +18,29 @@ class CurrencyRatesControllerTest extends IntegrationTestCase
      */
     public $fixtures = [
         'app.currency_rates',
-        'app.currencies'
+        'app.currencies',
     ];
 
     /**
      * Test index method
      *
      * @return void
+     * @throws \PHPUnit\Exception
      */
-    public function testIndex()
+    public function testIndex(): void
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $this->configRequest([
+            'headers' => [
+                'Accept' => 'application/json',
+                'Content-Type' => 'application/json',
+            ],
+        ]);
+
+        $this->get('/currency-rates');
+
+        $this->assertResponseOk();
+        $this->assertResponseCode(200);
+        $this->assertResponseContains('currency_id');
     }
 
     /**
@@ -44,10 +57,52 @@ class CurrencyRatesControllerTest extends IntegrationTestCase
      * Test add method
      *
      * @return void
+     * @throws \PHPUnit\Exception
      */
-    public function testAdd()
+    public function testAddWrongCurrency(): void
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $this->configRequest([
+            'headers' => [
+                'Accept' => 'application/json',
+                'Content-Type' => 'application/json',
+            ],
+        ]);
+
+        $data = [
+            'currency' => 'XXX',
+            'rate' => 1000,
+        ];
+
+        $this->post('/currency-rates/add', json_encode($data));
+
+        $this->assertResponseError();
+        $this->assertResponseCode(400);
+        $this->assertResponseContains('The requested currency is not exists.');
+    }
+    /**
+     * Test add method
+     *
+     * @return void
+     * @throws \PHPUnit\Exception
+     */
+    public function testAdd(): void
+    {
+        $this->configRequest([
+            'headers' => [
+                'Accept' => 'application/json',
+                'Content-Type' => 'application/json',
+            ],
+        ]);
+
+        $data = [
+            'currency' => 'RUB',
+            'rate' => 1000,
+        ];
+
+        $this->post('/currency-rates/add', json_encode($data));
+
+        $this->assertResponseOk();
+        $this->assertResponseCode(200);
     }
 
     /**

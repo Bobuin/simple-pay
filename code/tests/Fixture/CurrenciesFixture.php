@@ -40,8 +40,13 @@ class CurrenciesFixture extends TestFixture
         $this->records = [
             [
                 'id' => 1,
-                'code' => 'L',
-                'name' => 'Lorem ipsum dolor sit amet'
+                'code' => 'EUR',
+                'name' => 'Europe Union Euro'
+            ],
+            [
+                'id' => 2,
+                'code' => 'RUB',
+                'name' => 'Russian Ruble'
             ],
         ];
         parent::init();

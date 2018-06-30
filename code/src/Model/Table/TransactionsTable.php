@@ -5,6 +5,7 @@ namespace App\Model\Table;
 
 use App\Model\Entity\Transaction;
 use Cake\Datasource\EntityInterface;
+use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
@@ -87,5 +88,30 @@ class TransactionsTable extends Table
         $rules->add($rules->existsIn(['wallet_id'], 'Wallets'));
 
         return $rules;
+    }
+
+    /**
+     * @param Query $query The query builder
+     * @param array $options Query params
+     *
+     * @return Query
+     */
+    public function findByUser(Query $query, array $options): Query
+    {
+        $query->contain('Wallets');
+
+        if (null !== $options['dateFrom']) {
+            $query->where([
+                'Transactions.created >' => $options['dateFrom'],
+            ]);
+        }
+
+        if (null !== $options['dateTo']) {
+            $query->where([
+                'Transactions.created <' => $options['dateTo'],
+            ]);
+        }
+
+        return $query;
     }
 }

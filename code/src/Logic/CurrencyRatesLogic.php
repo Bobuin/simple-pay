@@ -18,14 +18,14 @@ class CurrencyRatesLogic
 {
     private const CURRENCY_PRECISION = 100;
     private const BASE_CURRENCY_CODE = 'USD';
-    private $tableCurrencyRates;
+    private $currencyRatesTable;
 
     /**
      * CurrencyRatesLogic constructor.
      */
     public function __construct()
     {
-        $this->tableCurrencyRates = TableRegistry::getTableLocator()->get('CurrencyRates');
+        $this->currencyRatesTable = TableRegistry::getTableLocator()->get('CurrencyRates');
     }
 
     /**
@@ -41,7 +41,7 @@ class CurrencyRatesLogic
             $todayDate = Time::now()->format('Y-m-d');
 
             /** @var CurrencyRate|null $todayRate */
-            $todayRate = $this->tableCurrencyRates
+            $todayRate = $this->currencyRatesTable
                 ->find()
                 ->where([
                     'created' => $todayDate,
@@ -69,7 +69,7 @@ class CurrencyRatesLogic
     public function addRate($data): CurrencyRate
     {
         /** @var Currency|null $currency */
-        $currency = $this->tableCurrencyRates->Currencies
+        $currency = $this->currencyRatesTable->Currencies
             ->find()
             ->where(['code' => $data['currency']])
             ->first();
@@ -80,12 +80,12 @@ class CurrencyRatesLogic
 
         $data['currency_id'] = $currency->id;
 
-        $currencyRate = $this->tableCurrencyRates->newEntity();
+        $currencyRate = $this->currencyRatesTable->newEntity();
 
-        $currencyRate = $this->tableCurrencyRates->patchEntity($currencyRate, $data);
+        $currencyRate = $this->currencyRatesTable->patchEntity($currencyRate, $data);
 
         try {
-            $saved = $this->tableCurrencyRates->save($currencyRate);
+            $saved = $this->currencyRatesTable->save($currencyRate);
         } catch (\Exception $exception) {
             throw new BadRequestException(__('The currency rate could not be saved. Error: ' .
                 $exception->getMessage()));

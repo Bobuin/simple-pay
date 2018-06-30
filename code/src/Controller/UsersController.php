@@ -54,7 +54,7 @@ class UsersController extends AppController
     /**
      * Add method
      *
-     * @return \Cake\Http\Response|null|void Redirects on successful add, renders view otherwise.
+     * @return \Cake\Http\Response|null|void
      * @throws \Cake\Http\Exception\MethodNotAllowedException
      * @throws \Cake\Http\Exception\BadRequestException
      */

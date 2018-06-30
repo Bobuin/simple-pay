@@ -3,8 +3,10 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\Logic\ReportLogic;
 use App\Model\Entity\Transaction;
 use Cake\Datasource\ResultSetInterface;
+use Cake\I18n\FrozenTime;
 
 /**
  * Transactions Controller
@@ -118,5 +120,84 @@ class TransactionsController extends AppController
         }
 
         return $this->redirect(['action' => 'index']);
+    }
+
+    /**
+     * Report method
+     *
+     * @param int $userId The ID of User to show report
+     *
+     * @return \Cake\Http\Response|null|void
+     * @throws \Cake\Datasource\Exception\RecordNotFoundException
+     * @throws \Cake\Datasource\Exception\InvalidPrimaryKeyException
+     */
+    public function report($userId)
+    {
+        /** @var array $data */
+        $data = $this->request->getData();
+
+        $data['id'] = $userId;
+        $data['date_from'] = $this->request->getData('date_from');
+        $data['date_to'] = $this->request->getData('date_to');
+
+        $reports = (new ReportLogic())->getReport($data);
+
+        $transactions = $this->paginate($reports);
+
+        $this->set(compact('transactions', 'userId'));
+    }
+
+    /**
+     * @param int $userId The ID of User to download report
+     *
+     * @return \Cake\Http\Response|null|void
+     * @throws \InvalidArgumentException
+     * @throws \Cake\Datasource\Exception\RecordNotFoundException
+     * @throws \Cake\Datasource\Exception\InvalidPrimaryKeyException
+     */
+    public function download($userId)
+    {
+        $this->disableAutoRender();
+
+        /** @var array $data */
+        $data = $this->request->getData();
+
+        $data['id'] = $userId;
+
+        /** @var Transaction[] $reports */
+        $reports = (new ReportLogic())->getReport($data)->toArray();
+
+        $delimiter = ',';
+        $outputFileName = 'Report-' . date('YmdHis') . '.csv';
+        $tempMemory = fopen('php://memory', 'wb');
+
+        FrozenTime::setToStringFormat('M/d/Y H:m:s');
+        // loop through the array
+        foreach ($reports as $operation) {
+            $line = [
+                'id' => $operation->id,
+                'wallet_id' => $operation->wallet_id,
+                'amount' => $operation->amount,
+                'base_amount' => $operation->base_amount,
+                'created' => $operation->created,
+            ];
+
+            // use the default csv handler
+            fputcsv($tempMemory, $line, $delimiter);
+        }
+
+        fseek($tempMemory, 0);
+
+        // modify the header to be CSV format
+        $this->response = $this->response->withHeader('Content-Type', 'application/csv');
+        $this->response = $this->response->withHeader(
+            'Content-Disposition',
+            'attachement; filename="' . $outputFileName . '";'
+        );
+
+        // output the file to be downloaded
+        fpassthru($tempMemory);
+
+        return $this->response;
     }
 }
