@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\Logic\CurrencyRatesLogic;
 use App\Model\Entity\CurrencyRate;
 use Cake\Datasource\ResultSetInterface;
 
@@ -51,24 +52,23 @@ class CurrencyRatesController extends AppController
     /**
      * Add method
      *
-     * @return \Cake\Http\Response|null Redirects on successful add, renders view otherwise.
+     * @return \Cake\Http\Response|null|void Redirects on successful add, renders view otherwise.
+     * @throws \Cake\Http\Exception\BadRequestException
+     * @throws \Cake\Http\Exception\MethodNotAllowedException
      */
     public function add()
     {
-        $currencyRate = $this->CurrencyRates->newEntity();
-        if ($this->request->is('post')) {
-            /** @var array $data */
-            $data = $this->request->getData();
-            $currencyRate = $this->CurrencyRates->patchEntity($currencyRate, $data);
-            if ($this->CurrencyRates->save($currencyRate)) {
-                $this->Flash->success(__('The currency rate has been saved.'));
+        $this->request->allowMethod('post');
 
-                return $this->redirect(['action' => 'index']);
-            }
-            $this->Flash->error(__('The currency rate could not be saved. Please, try again.'));
-        }
+        /** @var array $data */
+        $data = $this->request->getData();
+
+        $currencyRate = (new CurrencyRatesLogic())->addRate($data);
+
         $currencies = $this->CurrencyRates->Currencies->find('list', ['limit' => 200]);
+
         $this->set(compact('currencyRate', 'currencies'));
+        $this->set('_serialize', ['currencyRate', 'currencies']);
     }
 
     /**

@@ -8,10 +8,10 @@ use Cake\ORM\Entity;
 /**
  * CurrencyRate Entity
  *
- * @property int $id
- * @property int $currency_id
- * @property int $rate
- * @property \Cake\I18n\FrozenTime $created
+ * @property int                        $id
+ * @property int                        $currency_id
+ * @property int                        $rate
+ * @property \Cake\I18n\FrozenTime      $created
  *
  * @property \App\Model\Entity\Currency $currency
  */
@@ -31,6 +31,6 @@ class CurrencyRate extends Entity
         'currency_id' => true,
         'rate' => true,
         'created' => true,
-        'currency' => true
+        'currency' => true,
     ];
 }

@@ -47,6 +47,7 @@ class CurrencyRatesLogic
                     'created' => $todayDate,
                     'currency_id' => $currency->id,
                 ])
+                ->orderDesc('id')
                 ->first();
 
             if (null === $todayRate) {
@@ -54,6 +55,45 @@ class CurrencyRatesLogic
             }
 
             $currencyRate = round($todayRate->rate / self::CURRENCY_PRECISION, 2, PHP_ROUND_HALF_DOWN);
+        }
+
+        return $currencyRate;
+    }
+
+    /**
+     * @param array $data Currency rate data: currency code, rate
+     *
+     * @return CurrencyRate
+     * @throws \Cake\Http\Exception\BadRequestException
+     */
+    public function addRate($data): CurrencyRate
+    {
+        /** @var Currency|null $currency */
+        $currency = $this->tableCurrencyRates->Currencies
+            ->find()
+            ->where(['code' => $data['currency']])
+            ->first();
+
+        if (null === $currency) {
+            throw new BadRequestException(__('The requested currency is not exists.'));
+        }
+
+        $data['currency_id'] = $currency->id;
+
+        $currencyRate = $this->tableCurrencyRates->newEntity();
+
+        $currencyRate = $this->tableCurrencyRates->patchEntity($currencyRate, $data);
+
+        try {
+            $saved = $this->tableCurrencyRates->save($currencyRate);
+        } catch (\Exception $exception) {
+            throw new BadRequestException(__('The currency rate could not be saved. Error: ' .
+                $exception->getMessage()));
+        }
+
+        if (!$saved) {
+            throw new BadRequestException(__('The currency rate could not be saved. Please, try again. Error: ' .
+                json_encode($currencyRate->getErrors())));
         }
 
         return $currencyRate;
