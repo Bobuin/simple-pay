@@ -12,7 +12,7 @@ use Cake\Validation\Validator;
 /**
  * Wallets Model
  *
- * @property \App\Model\Table\CurrencyTable|\Cake\ORM\Association\BelongsTo   $Currencies
+ * @property \App\Model\Table\CurrenciesTable|\Cake\ORM\Association\BelongsTo $Currencies
  * @property \App\Model\Table\TransactionsTable|\Cake\ORM\Association\HasMany $Transactions
  * @property \App\Model\Table\UsersTable|\Cake\ORM\Association\HasMany        $Users
  *
@@ -45,13 +45,13 @@ class WalletsTable extends Table
 
         $this->belongsTo('Currencies', [
             'foreignKey' => 'currency_id',
-            'joinType' => 'INNER'
+            'joinType' => 'INNER',
         ]);
         $this->hasMany('Transactions', [
-            'foreignKey' => 'wallet_id'
+            'foreignKey' => 'wallet_id',
         ]);
         $this->hasMany('Users', [
-            'foreignKey' => 'wallet_id'
+            'foreignKey' => 'wallet_id',
         ]);
     }
 

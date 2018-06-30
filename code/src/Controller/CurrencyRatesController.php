@@ -1,14 +1,17 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Controller;
 
-use App\Controller\AppController;
+use App\Model\Entity\CurrencyRate;
+use Cake\Datasource\ResultSetInterface;
 
 /**
  * CurrencyRates Controller
  *
  * @property \App\Model\Table\CurrencyRatesTable $CurrencyRates
  *
- * @method \App\Model\Entity\CurrencyRate[]|\Cake\Datasource\ResultSetInterface paginate($object = null, array $settings = [])
+ * @method CurrencyRate[]|ResultSetInterface paginate($object = null, array $settings = [])
  */
 class CurrencyRatesController extends AppController
 {
@@ -21,7 +24,7 @@ class CurrencyRatesController extends AppController
     public function index()
     {
         $this->paginate = [
-            'contain' => ['Currencies']
+            'contain' => ['Currencies'],
         ];
         $currencyRates = $this->paginate($this->CurrencyRates);
 
@@ -32,13 +35,14 @@ class CurrencyRatesController extends AppController
      * View method
      *
      * @param string|null $id Currency Rate id.
+     *
      * @return \Cake\Http\Response|void
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
     public function view($id = null)
     {
         $currencyRate = $this->CurrencyRates->get($id, [
-            'contain' => ['Currencies']
+            'contain' => ['Currencies'],
         ]);
 
         $this->set('currencyRate', $currencyRate);
@@ -71,13 +75,14 @@ class CurrencyRatesController extends AppController
      * Edit method
      *
      * @param string|null $id Currency Rate id.
+     *
      * @return \Cake\Http\Response|null Redirects on successful edit, renders view otherwise.
-     * @throws \Cake\Network\Exception\NotFoundException When record not found.
+     * @throws \Cake\Http\Exception\NotFoundException When record not found.
      */
     public function edit($id = null)
     {
         $currencyRate = $this->CurrencyRates->get($id, [
-            'contain' => []
+            'contain' => [],
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
             /** @var array $data */
@@ -98,6 +103,7 @@ class CurrencyRatesController extends AppController
      * Delete method
      *
      * @param string|null $id Currency Rate id.
+     *
      * @return \Cake\Http\Response|null Redirects to index.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */

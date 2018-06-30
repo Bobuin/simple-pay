@@ -4,13 +4,15 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Logic\WalletLogic;
+use App\Model\Entity\Wallet;
+use Cake\Datasource\ResultSetInterface;
 
 /**
  * Wallets Controller
  *
  * @property \App\Model\Table\WalletsTable $Wallets
  *
- * @method \App\Model\Entity\Wallet[]|\Cake\Datasource\ResultSetInterface paginate($object = null, array $settings = [])
+ * @method Wallet[]|ResultSetInterface paginate($object = null, array $settings = [])
  */
 class WalletsController extends AppController
 {
@@ -76,7 +78,7 @@ class WalletsController extends AppController
      * @param string|null $id Wallet id.
      *
      * @return \Cake\Http\Response|null Redirects on successful edit, renders view otherwise.
-     * @throws \Cake\Network\Exception\NotFoundException When record not found.
+     * @throws \Cake\Http\Exception\NotFoundException When record not found.
      */
     public function edit($id = null)
     {

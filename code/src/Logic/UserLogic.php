@@ -28,6 +28,7 @@ class UserLogic
      * @param array $userData Received data for User creation
      *
      * @return User
+     * @throws \Cake\Http\Exception\BadRequestException
      */
     public function createNewUser($userData): User
     {

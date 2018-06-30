@@ -4,13 +4,15 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Logic\UserLogic;
+use App\Model\Entity\User;
+use Cake\Datasource\ResultSetInterface;
 
 /**
  * Users Controller
  *
  * @property \App\Model\Table\UsersTable $Users
  *
- * @method \App\Model\Entity\User[]|\Cake\Datasource\ResultSetInterface paginate($object = null, array $settings = [])
+ * @method User[]|ResultSetInterface paginate($object = null, array $settings = [])
  */
 class UsersController extends AppController
 {
@@ -23,7 +25,7 @@ class UsersController extends AppController
     public function index()
     {
         $this->paginate = [
-            'contain' => ['Wallets', 'Wallets.Currencies']
+            'contain' => ['Wallets', 'Wallets.Currencies'],
         ];
         $users = $this->paginate($this->Users);
 
@@ -42,7 +44,7 @@ class UsersController extends AppController
     public function view($id = null)
     {
         $user = $this->Users->get($id, [
-            'contain' => ['Wallets']
+            'contain' => ['Wallets'],
         ]);
 
         $this->set('user', $user);
@@ -59,6 +61,7 @@ class UsersController extends AppController
     {
         $this->request->allowMethod('post');
 
+        /** @var array $userData */
         $userData = $this->request->getData();
 
         $user = (new UserLogic())->createNewUser($userData);
@@ -73,12 +76,12 @@ class UsersController extends AppController
      * @param string|null $id User id.
      *
      * @return \Cake\Http\Response|null Redirects on successful edit, renders view otherwise.
-     * @throws \Cake\Network\Exception\NotFoundException When record not found.
+     * @throws \Cake\Http\Exception\NotFoundException When record not found.
      */
     public function edit($id = null)
     {
         $user = $this->Users->get($id, [
-            'contain' => []
+            'contain' => [],
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
             /** @var array $data */

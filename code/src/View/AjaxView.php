@@ -12,11 +12,8 @@
  * @since         3.0.4
  * @license       https://opensource.org/licenses/mit-license.php MIT License
  */
-namespace App\View;
 
-use Cake\Event\EventManager;
-use Cake\Http\Response;
-use Cake\Http\ServerRequest;
+namespace App\View;
 
 /**
  * A view class that is used for AJAX responses.

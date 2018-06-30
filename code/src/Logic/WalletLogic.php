@@ -5,6 +5,7 @@ namespace App\Logic;
 
 use App\Model\Entity\Currency;
 use App\Model\Entity\Wallet;
+use App\Model\Table\WalletsTable;
 use Cake\Http\Exception\BadRequestException;
 use Cake\ORM\TableRegistry;
 
@@ -29,6 +30,7 @@ class WalletLogic
      * @param string $walletCurrency Currency code for new Wallet
      *
      * @return Wallet
+     * @throws \Cake\Http\Exception\BadRequestException
      */
     public function createWallet($walletCurrency): Wallet
     {
@@ -112,7 +114,8 @@ class WalletLogic
                 'amount' => $data['amount'],
             ]);
 
-            throw new BadRequestException(__('There is an error occurred during transfer operation.'));
+            throw new BadRequestException(__('There is an error occurred during transfer operation. Error: ' .
+                $exception->getMessage()));
         }
 
         return [
@@ -159,7 +162,7 @@ class WalletLogic
         $wallet = $this->walletsTable->patchEntity($wallet, $walletData, ['associated' => ['Transactions']]);
 
         try {
-            /** @var Wallet $saved */
+            /** @var Wallet|false $saved */
             $saved = $this->walletsTable->save($wallet);
         } catch (\Exception $exception) {
             throw new BadRequestException(__('The wallet could not be saved. Error: ' . $exception->getMessage()));

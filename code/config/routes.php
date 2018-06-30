@@ -47,14 +47,6 @@ use Cake\Routing\Route\DashedRoute;
  */
 Router::defaultRouteClass(DashedRoute::class);
 
-const API_RESOURCES = [
-    'Currencies',
-    'CurrencyRates',
-    'Transactions',
-    'Users',
-    'Wallets',
-];
-
 Router::scope('/', function (RouteBuilder $routes) {
     /**
      * Here, we are connecting '/' (base path) to a controller called 'Pages',
@@ -68,7 +60,15 @@ Router::scope('/', function (RouteBuilder $routes) {
      */
     $routes->connect('/pages/*', ['controller' => 'Pages', 'action' => 'display']);
 
-    foreach (API_RESOURCES as $apiResource) {
+    $apiResources = [
+        'Currencies',
+        'CurrencyRates',
+        'Transactions',
+        'Users',
+        'Wallets',
+    ];
+
+    foreach ($apiResources as $apiResource) {
         $routes->resources($apiResource, [
             'inflect' => 'dasherize'
         ]);

@@ -17,7 +17,7 @@ class WalletsControllerTest extends IntegrationTestCase
      */
     public $fixtures = [
         'app.wallets',
-        'app.currency',
+        'app.currencies',
         'app.transactions',
         'app.users'
     ];

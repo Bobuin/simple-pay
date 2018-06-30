@@ -1,8 +1,10 @@
 <?php
+declare(strict_types=1);
+
 namespace App\Model\Table;
 
-use Cake\ORM\Query;
-use Cake\ORM\RulesChecker;
+use App\Model\Entity\Currency;
+use Cake\Datasource\EntityInterface;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
 
@@ -10,16 +12,16 @@ use Cake\Validation\Validator;
  * Currencies Model
  *
  * @property \App\Model\Table\CurrencyRatesTable|\Cake\ORM\Association\HasMany $CurrencyRates
- * @property \App\Model\Table\WalletsTable|\Cake\ORM\Association\HasMany $Wallets
+ * @property \App\Model\Table\WalletsTable|\Cake\ORM\Association\HasMany       $Wallets
  *
- * @method \App\Model\Entity\Currency get($primaryKey, $options = [])
- * @method \App\Model\Entity\Currency newEntity($data = null, array $options = [])
- * @method \App\Model\Entity\Currency[] newEntities(array $data, array $options = [])
- * @method \App\Model\Entity\Currency|bool save(\Cake\Datasource\EntityInterface $entity, $options = [])
- * @method \App\Model\Entity\Currency|bool saveOrFail(\Cake\Datasource\EntityInterface $entity, $options = [])
- * @method \App\Model\Entity\Currency patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
- * @method \App\Model\Entity\Currency[] patchEntities($entities, array $data, array $options = [])
- * @method \App\Model\Entity\Currency findOrCreate($search, callable $callback = null, $options = [])
+ * @method Currency get($primaryKey, $options = [])
+ * @method Currency newEntity($data = null, array $options = [])
+ * @method Currency[] newEntities(array $data, array $options = [])
+ * @method Currency|bool save(EntityInterface $entity, $options = [])
+ * @method Currency|bool saveOrFail(EntityInterface $entity, $options = [])
+ * @method Currency patchEntity(EntityInterface $entity, array $data, array $options = [])
+ * @method Currency[] patchEntities($entities, array $data, array $options = [])
+ * @method Currency findOrCreate($search, callable $callback = null, $options = [])
  */
 class CurrenciesTable extends Table
 {
@@ -28,6 +30,7 @@ class CurrenciesTable extends Table
      * Initialize method
      *
      * @param array $config The configuration for the Table.
+     *
      * @return void
      */
     public function initialize(array $config)
@@ -39,10 +42,10 @@ class CurrenciesTable extends Table
         $this->setPrimaryKey('id');
 
         $this->hasMany('CurrencyRates', [
-            'foreignKey' => 'currency_id'
+            'foreignKey' => 'currency_id',
         ]);
         $this->hasMany('Wallets', [
-            'foreignKey' => 'currency_id'
+            'foreignKey' => 'currency_id',
         ]);
     }
 
@@ -50,6 +53,7 @@ class CurrenciesTable extends Table
      * Default validation rules.
      *
      * @param \Cake\Validation\Validator $validator Validator instance.
+     *
      * @return \Cake\Validation\Validator
      */
     public function validationDefault(Validator $validator)
