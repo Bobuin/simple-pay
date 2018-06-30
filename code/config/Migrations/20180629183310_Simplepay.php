@@ -37,7 +37,7 @@ class Simplepay extends AbstractMigration
                 'limit' => 8,
                 'null' => true,
             ])
-            ->addColumn('created', 'datetime', [
+            ->addColumn('created', 'date', [
                 'default' => null,
                 'limit' => null,
                 'null' => true,
@@ -98,7 +98,7 @@ class Simplepay extends AbstractMigration
             ->addColumn('wallet_id', 'integer', [
                 'default' => null,
                 'limit' => 11,
-                'null' => true,
+                'null' => false,
             ])
             ->addIndex(
                 [
@@ -114,7 +114,7 @@ class Simplepay extends AbstractMigration
                 'null' => false,
             ])
             ->addColumn('balance', 'decimal', [
-                'default' => null,
+                'default' => '0.00',
                 'null' => true,
                 'precision' => 10,
                 'scale' => 2,
@@ -133,7 +133,7 @@ class Simplepay extends AbstractMigration
                 'id',
                 [
                     'update' => 'NO_ACTION',
-                    'delete' => 'NO_ACTION'
+                    'delete' => 'NO_ACTION',
                 ]
             )
             ->update();
@@ -145,7 +145,7 @@ class Simplepay extends AbstractMigration
                 'id',
                 [
                     'update' => 'NO_ACTION',
-                    'delete' => 'NO_ACTION'
+                    'delete' => 'NO_ACTION',
                 ]
             )
             ->update();
@@ -157,7 +157,7 @@ class Simplepay extends AbstractMigration
                 'id',
                 [
                     'update' => 'NO_ACTION',
-                    'delete' => 'NO_ACTION'
+                    'delete' => 'NO_ACTION',
                 ]
             )
             ->update();
@@ -169,7 +169,7 @@ class Simplepay extends AbstractMigration
                 'id',
                 [
                     'update' => 'NO_ACTION',
-                    'delete' => 'NO_ACTION'
+                    'delete' => 'NO_ACTION',
                 ]
             )
             ->update();

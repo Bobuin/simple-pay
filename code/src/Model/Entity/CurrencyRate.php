@@ -11,7 +11,7 @@ use Cake\ORM\Entity;
  * @property int                        $id
  * @property int                        $currency_id
  * @property int                        $rate
- * @property \Cake\I18n\FrozenTime      $created
+ * @property \Cake\I18n\FrozenDate      $created
  *
  * @property \App\Model\Entity\Currency $currency
  */
