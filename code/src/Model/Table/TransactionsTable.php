@@ -91,7 +91,7 @@ class TransactionsTable extends Table
     }
 
     /**
-     * @param Query $query The query builder
+     * @param Query $query   The query builder
      * @param array $options Query params
      *
      * @return Query
@@ -100,13 +100,13 @@ class TransactionsTable extends Table
     {
         $query->contain('Wallets');
 
-        if (null !== $options['dateFrom']) {
+        if (!empty($options['dateFrom'])) {
             $query->where([
                 'Transactions.created >' => $options['dateFrom'],
             ]);
         }
 
-        if (null !== $options['dateTo']) {
+        if (!empty($options['dateTo'])) {
             $query->where([
                 'Transactions.created <' => $options['dateTo'],
             ]);

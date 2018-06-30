@@ -6,7 +6,8 @@ namespace App\Controller;
 use App\Logic\ReportLogic;
 use App\Model\Entity\Transaction;
 use Cake\Datasource\ResultSetInterface;
-use Cake\I18n\FrozenTime;
+use Cake\Http\Response;
+use Cake\I18n\Time;
 
 /**
  * Transactions Controller
@@ -21,7 +22,7 @@ class TransactionsController extends AppController
     /**
      * Index method
      *
-     * @return \Cake\Http\Response|void
+     * @return Response|void
      */
     public function index()
     {
@@ -38,7 +39,7 @@ class TransactionsController extends AppController
      *
      * @param string|null $id Transaction id.
      *
-     * @return \Cake\Http\Response|void
+     * @return Response|void
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
     public function view($id = null)
@@ -53,7 +54,7 @@ class TransactionsController extends AppController
     /**
      * Add method
      *
-     * @return \Cake\Http\Response|null Redirects on successful add, renders view otherwise.
+     * @return Response|null Redirects on successful add, renders view otherwise.
      */
     public function add()
     {
@@ -78,7 +79,7 @@ class TransactionsController extends AppController
      *
      * @param string|null $id Transaction id.
      *
-     * @return \Cake\Http\Response|null Redirects on successful edit, renders view otherwise.
+     * @return Response|null Redirects on successful edit, renders view otherwise.
      * @throws \Cake\Http\Exception\NotFoundException When record not found.
      */
     public function edit($id = null)
@@ -106,7 +107,7 @@ class TransactionsController extends AppController
      *
      * @param string|null $id Transaction id.
      *
-     * @return \Cake\Http\Response|null Redirects to index.
+     * @return Response|null Redirects to index.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
     public function delete($id = null)
@@ -127,51 +128,55 @@ class TransactionsController extends AppController
      *
      * @param int $userId The ID of User to show report
      *
-     * @return \Cake\Http\Response|null|void
+     * @return Response|null|void
+     * @throws \InvalidArgumentException
+     * @throws \Cake\Http\Exception\NotFoundException
      * @throws \Cake\Datasource\Exception\RecordNotFoundException
      * @throws \Cake\Datasource\Exception\InvalidPrimaryKeyException
      */
     public function report($userId)
     {
-        /** @var array $data */
-        $data = $this->request->getData();
-
-        $data['id'] = $userId;
-        $data['date_from'] = $this->request->getData('date_from');
-        $data['date_to'] = $this->request->getData('date_to');
+        $data['id'] = $this->request->getData('user_id') ?: $userId;
+        $data['date_from'] = $this->formatDate('date_from');
+        $data['date_to'] = $this->formatDate('date_to');
 
         $reports = (new ReportLogic())->getReport($data);
 
+        $amount = $reports->sumOf('amount');
+        $baseAmount = $reports->sumOf('base_amount');
+
         $transactions = $this->paginate($reports);
 
-        $this->set(compact('transactions', 'userId'));
+        $users = $this->Transactions->Wallets->Users->find('list', ['limit' => 200]);
+
+        $this->set(compact('transactions', 'userId', 'amount', 'baseAmount', 'users'));
     }
 
     /**
      * @param int $userId The ID of User to download report
      *
-     * @return \Cake\Http\Response|null|void
+     * @return Response|null
+     * @throws \Cake\Http\Exception\NotFoundException
      * @throws \InvalidArgumentException
      * @throws \Cake\Datasource\Exception\RecordNotFoundException
      * @throws \Cake\Datasource\Exception\InvalidPrimaryKeyException
      */
-    public function download($userId)
+    public function download($userId): ?Response
     {
         $this->disableAutoRender();
 
-        /** @var array $data */
-        $data = $this->request->getData();
-
         $data['id'] = $userId;
+        $data['date_from'] = $this->formatDate('date_from');
+        $data['date_to'] = $this->formatDate('date_to');
 
         /** @var Transaction[] $reports */
         $reports = (new ReportLogic())->getReport($data)->toArray();
 
         $delimiter = ',';
         $outputFileName = 'Report-' . date('YmdHis') . '.csv';
+        /** @var resource $tempMemory */
         $tempMemory = fopen('php://memory', 'wb');
 
-        FrozenTime::setToStringFormat('M/d/Y H:m:s');
         // loop through the array
         foreach ($reports as $operation) {
             $line = [
@@ -179,7 +184,7 @@ class TransactionsController extends AppController
                 'wallet_id' => $operation->wallet_id,
                 'amount' => $operation->amount,
                 'base_amount' => $operation->base_amount,
-                'created' => $operation->created,
+                'created' => $operation->created->format('M/d/Y H:i:s'),
             ];
 
             // use the default csv handler
@@ -199,5 +204,23 @@ class TransactionsController extends AppController
         fpassthru($tempMemory);
 
         return $this->response;
+    }
+
+    /**
+     * @param string $param Name of date period boundary
+     *
+     * @return null|string
+     * @throws \InvalidArgumentException
+     */
+    private function formatDate($param): ?string
+    {
+        $incomeFormat = 'Y m d H i s';
+        $datetime = \is_array($this->request->getData($param))
+            ? implode(' ', $this->request->getData($param))
+            : (string)$this->request->getData($param);
+
+        return $datetime
+            ? Time::createFromFormat($incomeFormat, $datetime)->format('Y-m-d H:i:s')
+            : null;
     }
 }
