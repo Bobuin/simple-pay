@@ -13,7 +13,11 @@ If Vagrant not used - install Composer manually.
 
 In project "code" directory run `composer install`
 
-Assign read\write permissions to temp folder `code/tmp` 
+Assign read\write permissions to temp folder `code/tmp`
+
+Make sure you have available instance of MySQL DB
+
+Run `bin/cake migrations migrate`
 
 ## Configuration
 
@@ -23,7 +27,7 @@ For connecting to Vagrant SSH use next settings:
     user:vagrant
     password:vagrant
 
-Database connection params:
+Pre-installed in vagrant database connection params:
 
     192.168.10.20:3306
     user:root
