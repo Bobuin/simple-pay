@@ -1,51 +1,88 @@
-# CakePHP Application Skeleton
+# Application description
 
-[![Build Status](https://img.shields.io/travis/cakephp/app/master.svg?style=flat-square)](https://travis-ci.org/cakephp/app)
-[![Total Downloads](https://img.shields.io/packagist/dt/cakephp/app.svg?style=flat-square)](https://packagist.org/packages/cakephp/app)
+This project demonstrates simple payment system operations with usage
+of REST API.
 
-A skeleton for creating applications with [CakePHP](https://cakephp.org) 3.x.
+Entities in system:
 
-The framework source code can be found here: [cakephp/cakephp](https://github.com/cakephp/cakephp).
+    Users
+    Wallets
+    Currencies
+    Currency Rates
+    Transactions
 
-## Installation
+Each User have one Wallet with one specified Currency.
 
-1. Download [Composer](https://getcomposer.org/doc/00-intro.md) or update `composer self-update`.
-2. Run `php composer.phar create-project --prefer-dist cakephp/app [app_name]`.
+Currencies have daily records with Rates relatively to 'base currency' (now its USD)
 
-If Composer is installed globally, run
+Wallets keeps information about current User balance.
 
-```bash
-composer create-project --prefer-dist cakephp/app
-```
+Transaction records contains data about all funds movements.
 
-In case you want to use a custom app dir name (e.g. `/myapp/`):
+## API
 
-```bash
-composer create-project --prefer-dist cakephp/app myapp
-```
+#### Creation of new Currency
 
-You can now either use your machine's webserver to view the default home page, or start
-up the built-in webserver with:
+    POST /currencies
 
-```bash
-bin/cake server -p 8765
-```
+    {
+        "code": "EUR",
+        "name": "Europe Union Euro"
+    }
 
-Then visit `http://localhost:8765` to see the welcome page.
+#### Import Currency Rate for today
 
-## Update
+    POST /currency-rates/add
+    
+    {
+        "currency": "EUR",
+        "rate": 120
+    }
 
-Since this skeleton is a starting point for your application and various files
-would have been modified as per your needs, there isn't a way to provide
-automated upgrades, so you have to do any updates manually.
+#### Create new User (Wallet will be added automatically)
 
-## Configuration
+    POST /users
+    
+    {
+        "name": "Another One User",
+        "country": "Italy",
+        "city": "Milan",
+        "currency": "EUR"
+    }
 
-Read and edit `config/app.php` and setup the `'Datasources'` and any other
-configuration relevant for your application.
+#### Adding funds to User's balance
 
-## Layout
+    POST /wallets/add-funds/
+    
+    {
+        "wallet_id": 1,
+        "amount": 100
+    }
 
-The app skeleton uses a subset of [Foundation](http://foundation.zurb.com/) (v5) CSS
-framework by default. You can, however, replace it with any other library or
-custom styles.
+#### Transfer funds between Users
+
+    POST /wallets/transfer
+    
+    {
+        "from_wallet_id": 1,
+        "to_wallet_id": 2,
+        "amount": 100,
+        "transfer_currency": "sender"
+    }
+
+Parameter `transfer_currency` can be either `sender` or `receiver`
+
+## Reports (Web interface)
+
+All User's operation can be reviewed on reports page `/reports/{user_id}`
+
+On reports page you can change User by selecting from drop down menu.
+
+It is available to narrow reporting period by choosing start and end datetime of 
+transactions.
+
+To save displayed report click "Download CSV" button.
+
+## More features
+
+Will be later...
