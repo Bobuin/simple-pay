@@ -2,7 +2,6 @@
 
 use Migrations\AbstractMigration;
 
-
 class Simplepay extends AbstractMigration
 {
     /**
@@ -24,6 +23,15 @@ class Simplepay extends AbstractMigration
                 'limit' => 255,
                 'null' => true,
             ])
+            ->addIndex(
+                [
+                    'code',
+                ],
+                [
+                    'name' => 'code_UNIQUE',
+                    'unique' => true,
+                ]
+            )
             ->create();
 
         $this->table('currency_rates')
@@ -53,7 +61,7 @@ class Simplepay extends AbstractMigration
             ->addColumn('wallet_id', 'integer', [
                 'default' => null,
                 'limit' => 11,
-                'null' => true,
+                'null' => false,
             ])
             ->addColumn('amount', 'decimal', [
                 'default' => null,

@@ -21,6 +21,11 @@ Transaction records contains data about all funds movements.
 
 ## API
 
+In all API requests must be present next header parameters:
+
+    Content-Type: application/json
+    Accept: application/json
+
 #### Creation of new Currency
 
     POST /currencies
