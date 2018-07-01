@@ -14,7 +14,7 @@ use Cake\Validation\Validator;
  *
  * @property \App\Model\Table\CurrenciesTable|\Cake\ORM\Association\BelongsTo $Currencies
  * @property \App\Model\Table\TransactionsTable|\Cake\ORM\Association\HasMany $Transactions
- * @property \App\Model\Table\UsersTable|\Cake\ORM\Association\HasMany        $Users
+ * @property \App\Model\Table\UsersTable|\Cake\ORM\Association\BelongsTo      $Users
  *
  * @method Wallet      get($primaryKey, $options = [])
  * @method Wallet      newEntity($data = null, array $options = [])

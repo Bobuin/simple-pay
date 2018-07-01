@@ -5,6 +5,7 @@ namespace App\Model\Table;
 
 use App\Model\Entity\Currency;
 use Cake\Datasource\EntityInterface;
+use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
 
@@ -56,7 +57,7 @@ class CurrenciesTable extends Table
      *
      * @return \Cake\Validation\Validator
      */
-    public function validationDefault(Validator $validator)
+    public function validationDefault(Validator $validator): Validator
     {
         $validator
             ->integer('id')
@@ -65,7 +66,8 @@ class CurrenciesTable extends Table
         $validator
             ->scalar('code')
             ->maxLength('code', 3)
-            ->allowEmpty('code');
+            ->allowEmpty('code')
+            ->add('code', 'unique', ['rule' => 'validateUnique', 'provider' => 'table']);
 
         $validator
             ->scalar('name')
@@ -73,5 +75,20 @@ class CurrenciesTable extends Table
             ->allowEmpty('name');
 
         return $validator;
+    }
+
+    /**
+     * Returns a rules checker object that will be used for validating
+     * application integrity.
+     *
+     * @param \Cake\ORM\RulesChecker $rules The rules object to be modified.
+     *
+     * @return \Cake\ORM\RulesChecker
+     */
+    public function buildRules(RulesChecker $rules): RulesChecker
+    {
+        $rules->add($rules->isUnique(['code']));
+
+        return $rules;
     }
 }

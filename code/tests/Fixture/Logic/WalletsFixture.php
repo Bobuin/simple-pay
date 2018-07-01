@@ -1,17 +1,17 @@
 <?php
 
-namespace App\Test\Fixture;
+namespace App\Test\Fixture\Logic;
 
 use Cake\TestSuite\Fixture\TestFixture;
 
 /**
- * CurrencyRatesFixture
+ * WalletsFixture
  *
  */
-class CurrencyRatesFixture extends TestFixture
+class WalletsFixture extends TestFixture
 {
 
-    public $import = ['model' => 'CurrencyRates'];
+    public $import = ['model' => 'Wallets'];
 
     /**
      * Init method
@@ -24,8 +24,12 @@ class CurrencyRatesFixture extends TestFixture
             [
                 'id' => 1,
                 'currency_id' => 1,
-                'rate' => 1,
-                'created' => date('Y-m-d'),
+                'balance' => 100,
+            ],
+            [
+                'id' => 2,
+                'currency_id' => 2,
+                'balance' => 1000,
             ],
         ];
         parent::init();

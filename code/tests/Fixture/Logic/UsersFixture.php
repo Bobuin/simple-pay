@@ -1,5 +1,5 @@
 <?php
-namespace App\Test\Fixture;
+namespace App\Test\Fixture\Logic;
 
 use Cake\TestSuite\Fixture\TestFixture;
 
@@ -26,6 +26,13 @@ class UsersFixture extends TestFixture
                 'country' => 'Lorem ipsum dolor sit amet',
                 'city' => 'Lorem ipsum dolor sit amet',
                 'wallet_id' => 1
+            ],
+            [
+                'id' => 2,
+                'name' => 'Lorem ipsum dolor sit amet',
+                'country' => 'Lorem ipsum dolor sit amet',
+                'city' => 'Lorem ipsum dolor sit amet',
+                'wallet_id' => 3
             ],
         ];
         parent::init();

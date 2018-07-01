@@ -108,6 +108,7 @@ class TransactionsController extends AppController
      * @param string|null $id Transaction id.
      *
      * @return Response|null Redirects to index.
+     * @throws \Cake\Http\Exception\MethodNotAllowedException
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
     public function delete($id = null)
@@ -176,6 +177,17 @@ class TransactionsController extends AppController
         $outputFileName = 'Report-' . date('YmdHis') . '.csv';
         /** @var resource $tempMemory */
         $tempMemory = fopen('php://memory', 'wb');
+
+        $headLine = [
+            'id' => 'Transaction ID',
+            'wallet_id' => 'Wallet ID',
+            'amount' => 'Operation Amount',
+            'base_amount' => 'Operation Base Amount',
+            'created' => 'Operation Date',
+        ];
+
+        // use the default csv handler
+        fputcsv($tempMemory, $headLine, $delimiter);
 
         // loop through the array
         foreach ($reports as $operation) {

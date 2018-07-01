@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Test\Fixture;
+namespace App\Test\Fixture\Logic;
 
 use Cake\TestSuite\Fixture\TestFixture;
 
@@ -24,7 +24,13 @@ class CurrencyRatesFixture extends TestFixture
             [
                 'id' => 1,
                 'currency_id' => 1,
-                'rate' => 1,
+                'rate' => 110,
+                'created' => date('Y-m-d'),
+            ],
+            [
+                'id' => 2,
+                'currency_id' => 2,
+                'rate' => 3000,
                 'created' => date('Y-m-d'),
             ],
         ];

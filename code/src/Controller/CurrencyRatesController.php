@@ -106,6 +106,7 @@ class CurrencyRatesController extends AppController
      * @param string|null $id Currency Rate id.
      *
      * @return \Cake\Http\Response|null Redirects to index.
+     * @throws \Cake\Http\Exception\MethodNotAllowedException
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
     public function delete($id = null)

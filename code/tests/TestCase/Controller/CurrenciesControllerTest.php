@@ -1,7 +1,7 @@
 <?php
+
 namespace App\Test\TestCase\Controller;
 
-use App\Controller\CurrenciesController;
 use Cake\TestSuite\IntegrationTestCase;
 
 /**
@@ -18,7 +18,7 @@ class CurrenciesControllerTest extends IntegrationTestCase
     public $fixtures = [
         'app.currencies',
         'app.currency_rates',
-        'app.wallets'
+        'app.wallets',
     ];
 
     /**

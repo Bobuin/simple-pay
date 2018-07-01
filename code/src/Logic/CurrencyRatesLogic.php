@@ -19,6 +19,7 @@ class CurrencyRatesLogic
     private const CURRENCY_PRECISION = 100;
     private const BASE_CURRENCY_CODE = 'USD';
     private $currencyRatesTable;
+    private $todayDate;
 
     /**
      * CurrencyRatesLogic constructor.
@@ -26,25 +27,34 @@ class CurrencyRatesLogic
     public function __construct()
     {
         $this->currencyRatesTable = TableRegistry::getTableLocator()->get('CurrencyRates');
+        $this->todayDate = Time::now()->format('Y-m-d');
     }
 
     /**
-     * @param Currency $currency Wallet currency
+     * @param int $currencyId Wallet currency ID
      *
      * @return float
      * @throws \Cake\Http\Exception\BadRequestException
      */
-    public function getRate(Currency $currency): float
+    public function getRate(int $currencyId): float
     {
+        /** @var Currency $currency */
+        $currency = $this->currencyRatesTable->Currencies
+            ->find()
+            ->where(['id' => $currencyId])
+            ->first();
+
+        if (null === $currency) {
+            throw new BadRequestException(__('The requested currency is not exists.'));
+        }
+
         $currencyRate = 1;
         if (self::BASE_CURRENCY_CODE !== $currency->code) {
-            $todayDate = Time::now()->format('Y-m-d');
-
             /** @var CurrencyRate|null $todayRate */
             $todayRate = $this->currencyRatesTable
                 ->find()
                 ->where([
-                    'created' => $todayDate,
+                    'created' => $this->todayDate,
                     'currency_id' => $currency->id,
                 ])
                 ->orderDesc('id')

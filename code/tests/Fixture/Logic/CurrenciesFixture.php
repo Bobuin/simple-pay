@@ -1,5 +1,6 @@
 <?php
-namespace App\Test\Fixture;
+
+namespace App\Test\Fixture\Logic;
 
 use Cake\TestSuite\Fixture\TestFixture;
 
@@ -23,12 +24,17 @@ class CurrenciesFixture extends TestFixture
             [
                 'id' => 1,
                 'code' => 'EUR',
-                'name' => 'Europe Union Euro'
+                'name' => 'Europe Union Euro',
             ],
             [
                 'id' => 2,
                 'code' => 'RUB',
-                'name' => 'Russian Ruble'
+                'name' => 'Russian Ruble',
+            ],
+            [
+                'id' => 3,
+                'code' => 'UAH',
+                'name' => 'Ukrainian Hryvnya'
             ],
         ];
         parent::init();

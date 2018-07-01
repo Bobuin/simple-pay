@@ -5,7 +5,6 @@ namespace App\Logic;
 
 use App\Model\Entity\Currency;
 use App\Model\Entity\Wallet;
-use App\Model\Table\WalletsTable;
 use Cake\Http\Exception\BadRequestException;
 use Cake\ORM\TableRegistry;
 
@@ -71,48 +70,63 @@ class WalletLogic
      */
     public function transfer($data): array
     {
-        $toWalletExist = $this->walletsTable->exists(['id' => $data['from_wallet_id']]);
+        $transferAmount = $data['amount'];
 
-        if (!$toWalletExist) {
-            throw new BadRequestException(__('The requested receiver wallet is not exists.'));
-        }
+        /** @var Wallet|null $senderWallet */
+        $senderWallet = $this->walletsTable
+            ->find()
+            ->where(['Wallets.id' => $data['from_wallet_id']])
+            ->first();
 
-        $fromWalletExist = $this->walletsTable->exists(['id' => $data['to_wallet_id']]);
-
-        if (!$fromWalletExist) {
+        if (null === $senderWallet) {
             throw new BadRequestException(__('The requested sender wallet is not exists.'));
         }
 
-        // Take from sender
-        $senderWallet = $this->addFunds([
-            'wallet_id' => $data['from_wallet_id'],
-            'amount' => $data['amount'] * (-1),
-        ]);
-
-        $senderBaseAmount = $senderWallet->transactions[0]->base_amount;
-
-        /** @var Wallet $receiverWallet */
+        /** @var Wallet|null $receiverWallet */
         $receiverWallet = $this->walletsTable
             ->find()
-            ->contain('Currencies')
             ->where(['Wallets.id' => $data['to_wallet_id']])
             ->first();
 
-        $receiverCurrencyRate = (new CurrencyRatesLogic())->getRate($receiverWallet->currency);
-        $receiverBaseAmount = $senderBaseAmount * $receiverCurrencyRate * (-1);
+        if (null === $receiverWallet) {
+            throw new BadRequestException(__('The requested receiver wallet is not exists.'));
+        }
+
+        $currencyRatesLogic = new CurrencyRatesLogic();
+
+        switch ($data['transfer_currency']) {
+            case 'sender':
+                $senderCurrencyRate = $currencyRatesLogic->getRate($senderWallet->currency_id);
+                $senderAmount = $transferAmount;
+                $senderBaseAmount = round($senderAmount / $senderCurrencyRate, 2, PHP_ROUND_HALF_DOWN);
+
+                $receiverCurrencyRate = $currencyRatesLogic->getRate($receiverWallet->currency_id);
+                $receiverBaseAmount = $senderBaseAmount;
+                $receiverAmount = $receiverBaseAmount * $receiverCurrencyRate;
+                break;
+            case 'receiver':
+                $receiverCurrencyRate = $currencyRatesLogic->getRate($receiverWallet->currency_id);
+                $receiverAmount = $transferAmount;
+                $receiverBaseAmount = round($receiverAmount / $receiverCurrencyRate, 2, PHP_ROUND_HALF_DOWN);
+
+                $senderCurrencyRate = $currencyRatesLogic->getRate($senderWallet->currency_id);
+                $senderBaseAmount = $receiverBaseAmount;
+                $senderAmount = $senderBaseAmount * $senderCurrencyRate;
+                break;
+            default:
+                throw
+                new BadRequestException('Wrong "transfer_currency" value. It can be "sender" or "receiver".');
+        }
+
+        // Take from sender
+        $senderWallet = $this->addFunds($senderWallet, (-1) * $senderAmount, (-1) * $senderBaseAmount);
 
         try {
             // Move to receiver
-            $receiverWallet = $this->addFunds([
-                'wallet_id' => $data['to_wallet_id'],
-                'amount' => $receiverBaseAmount,
-            ]);
+            $receiverWallet = $this->addFunds($receiverWallet, $receiverAmount, $receiverBaseAmount);
         } catch (\Exception $exception) {
             // Return Funds if fail
-            $this->addFunds([
-                'wallet_id' => $data['from_wallet_id'],
-                'amount' => $data['amount'],
-            ]);
+            $this->addFunds($senderWallet, $senderAmount, $senderBaseAmount);
 
             throw new BadRequestException(__('There is an error occurred during transfer operation. Error: ' .
                 $exception->getMessage()));
@@ -125,45 +139,34 @@ class WalletLogic
     }
 
     /**
-     * @param array $data Data for funding: wallet ID and amount
+     * @param Wallet $wallet       Target Wallet entity to add funds.
+     * @param float  $amount       Funds amount to add in Wallet currency
+     * @param float  $baseAmount   Funds amount in base currency
      *
      * @return Wallet
      * @throws \Cake\Http\Exception\BadRequestException
      */
-    public function addFunds($data): Wallet
+    public function addFunds(Wallet $wallet, $amount, $baseAmount): Wallet
     {
-        /** @var Wallet|null $wallet */
-        $wallet = $this->walletsTable
-            ->find()
-            ->contain('Currencies')
-            ->where(['Wallets.id' => $data['wallet_id']])
-            ->first();
-
-        if (null === $wallet) {
-            throw new BadRequestException(__('The requested wallet is not exists.'));
-        }
-
-        $currencyRate = (new CurrencyRatesLogic())->getRate($wallet->currency);
-
         $walletData = [
-            'balance' => $wallet->balance + $data['amount'],
+            'balance' => round($wallet->balance + $amount, 2, PHP_ROUND_HALF_DOWN),
             'transactions' => [
                 [
                     'wallet_id' => $wallet->id,
-                    'amount' => $data['amount'],
-                    'base_amount' => round($data['amount'] / $currencyRate, 2, PHP_ROUND_HALF_DOWN),
+                    'amount' => $amount,
+                    'base_amount' => $baseAmount,
                 ],
             ],
         ];
 
         $wallet->setDirty('transactions');
 
-        /** @var Wallet $wallet */
-        $wallet = $this->walletsTable->patchEntity($wallet, $walletData, ['associated' => ['Transactions']]);
+        /** @var Wallet $walletEntity */
+        $walletEntity = $this->walletsTable->patchEntity($wallet, $walletData, ['associated' => ['Transactions']]);
 
         try {
             /** @var Wallet|false $saved */
-            $saved = $this->walletsTable->save($wallet);
+            $saved = $this->walletsTable->save($walletEntity);
         } catch (\Exception $exception) {
             throw new BadRequestException(__('The wallet could not be saved. Error: ' . $exception->getMessage()));
         }

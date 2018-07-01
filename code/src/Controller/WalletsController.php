@@ -3,9 +3,11 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\Logic\CurrencyRatesLogic;
 use App\Logic\WalletLogic;
 use App\Model\Entity\Wallet;
 use Cake\Datasource\ResultSetInterface;
+use Cake\Http\Exception\BadRequestException;
 
 /**
  * Wallets Controller
@@ -106,6 +108,7 @@ class WalletsController extends AppController
      * @param string|null $id Wallet id.
      *
      * @return \Cake\Http\Response|null Redirects to index.
+     * @throws \Cake\Http\Exception\MethodNotAllowedException
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
     public function delete($id = null)
@@ -125,6 +128,8 @@ class WalletsController extends AppController
      * Add funds to Wallet method
      *
      * @return \Cake\Http\Response|null|void
+     * @throws \Cake\Http\Exception\MethodNotAllowedException
+     * @throws \Cake\Http\Exception\BadRequestException
      */
     public function addFunds()
     {
@@ -133,16 +138,36 @@ class WalletsController extends AppController
         /** @var array $data */
         $data = $this->request->getData();
 
-        $wallet = (new WalletLogic())->addFunds($data);
+        if (empty($data)) {
+            throw new BadRequestException(__('Wrong request data.'));
+        }
+
+        /** @var Wallet|null $wallet */
+        $wallet = $this->Wallets
+            ->find()
+            ->where(['Wallets.id' => $data['wallet_id']])
+            ->first();
+
+        if (null === $wallet) {
+            throw new BadRequestException(__('The requested wallet is not exists.'));
+        }
+
+        $currencyRate = (new CurrencyRatesLogic())->getRate($wallet->currency_id);
+
+        $baseAmount = round($data['amount'] / $currencyRate, 2, PHP_ROUND_HALF_DOWN);
+
+        $wallet = (new WalletLogic())->addFunds($wallet, $data['amount'], $baseAmount);
 
         $this->set('wallet', $wallet);
         $this->set('_serialize', ['wallet']);
     }
 
     /**
-     * Transfer fund method
+     * Transfer funds method
      *
      * @return \Cake\Http\Response|null|void
+     * @throws \Cake\Http\Exception\MethodNotAllowedException
+     * @throws \Cake\Http\Exception\BadRequestException
      */
     public function transfer()
     {
@@ -150,6 +175,10 @@ class WalletsController extends AppController
 
         /** @var array $data */
         $data = $this->request->getData();
+
+        if (empty($data)) {
+            throw new BadRequestException(__('Wrong request data.'));
+        }
 
         $wallets = (new WalletLogic())->transfer($data);
 

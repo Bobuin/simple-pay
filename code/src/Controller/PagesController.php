@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * CakePHP(tm) : Rapid Development Framework (https://cakephp.org)
  * Copyright (c) Cake Software Foundation, Inc. (https://cakefoundation.org)
@@ -12,6 +13,7 @@
  * @since     0.2.9
  * @license   https://opensource.org/licenses/mit-license.php MIT License
  */
+
 namespace App\Controller;
 
 use Cake\Core\Configure;
@@ -33,10 +35,11 @@ class PagesController extends AppController
      * Displays a view
      *
      * @param array ...$path Path segments.
+     *
      * @return \Cake\Http\Response|null
      * @throws \Cake\Http\Exception\ForbiddenException When a directory traversal attempt.
-     * @throws \Cake\Http\Exception\NotFoundException When the view file could not
-     *   be found or \Cake\View\Exception\MissingTemplateException in debug mode.
+     * @throws \Cake\Http\Exception\NotFoundException When the view file could not be found
+     * @throws \Cake\View\Exception\MissingTemplateException in debug mode.
      */
     public function display(...$path)
     {
@@ -44,7 +47,7 @@ class PagesController extends AppController
         if (!$count) {
             return $this->redirect('/');
         }
-        if (in_array('..', $path, true) || in_array('.', $path, true)) {
+        if (\in_array('..', $path, true) || \in_array('.', $path, true)) {
             throw new ForbiddenException();
         }
         $page = $subpage = null;

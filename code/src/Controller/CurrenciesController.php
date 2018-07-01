@@ -5,6 +5,7 @@ namespace App\Controller;
 
 use App\Model\Entity\Currency;
 use Cake\Datasource\ResultSetInterface;
+use Cake\Http\Exception\BadRequestException;
 
 /**
  * Currencies Controller
@@ -48,23 +49,26 @@ class CurrenciesController extends AppController
     /**
      * Add method
      *
-     * @return \Cake\Http\Response|null Redirects on successful add, renders view otherwise.
+     * @return \Cake\Http\Response|null|void
+     * @throws \Cake\Http\Exception\MethodNotAllowedException
+     * @throws \Cake\Http\Exception\BadRequestException
      */
     public function add()
     {
-        $currency = $this->Currencies->newEntity();
-        if ($this->request->is('post')) {
-            /** @var array $data */
-            $data = $this->request->getData();
-            $currency = $this->Currencies->patchEntity($currency, $data);
-            if ($this->Currencies->save($currency)) {
-                $this->Flash->success(__('The currency has been saved.'));
+        $this->request->allowMethod('post');
 
-                return $this->redirect(['action' => 'index']);
-            }
-            $this->Flash->error(__('The currency could not be saved. Please, try again.'));
+        $currency = $this->Currencies->newEntity();
+
+        /** @var array $data */
+        $data = $this->request->getData();
+        $currency = $this->Currencies->patchEntity($currency, $data);
+
+        if (!$this->Currencies->save($currency)) {
+            throw new BadRequestException(__('The currency could not be saved. Please, try again.'));
         }
+
         $this->set(compact('currency'));
+        $this->set('_serialize', ['currency']);
     }
 
     /**
@@ -100,6 +104,7 @@ class CurrenciesController extends AppController
      * @param string|null $id Currency id.
      *
      * @return \Cake\Http\Response|null Redirects to index.
+     * @throws \Cake\Http\Exception\MethodNotAllowedException
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
     public function delete($id = null)

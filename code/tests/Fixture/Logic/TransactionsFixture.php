@@ -1,5 +1,6 @@
 <?php
-namespace App\Test\Fixture;
+
+namespace App\Test\Fixture\Logic;
 
 use Cake\TestSuite\Fixture\TestFixture;
 
@@ -23,9 +24,9 @@ class TransactionsFixture extends TestFixture
             [
                 'id' => 1,
                 'wallet_id' => 1,
-                'amount' => 15,
+                'amount' => 1.5,
                 'base_amount' => 1.5,
-                'created' => '2018-06-30 05:34:38'
+                'created' => date('Y-m-d H:i:s', strtotime('6 hours ago')),
             ],
         ];
         parent::init();

@@ -61,10 +61,6 @@ class UsersTable extends Table
             ->allowEmpty('id', 'create');
 
         $validator
-            ->integer('wallet_id')
-            ->requirePresence('wallet_id', 'create');
-
-        $validator
             ->scalar('name')
             ->maxLength('name', 255)
             ->requirePresence('name', 'create');
