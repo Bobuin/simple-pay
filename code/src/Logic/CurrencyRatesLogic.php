@@ -38,7 +38,7 @@ class CurrencyRatesLogic
      */
     public function getRate(int $currencyId): float
     {
-        /** @var Currency $currency */
+        /** @var Currency|null $currency */
         $currency = $this->currencyRatesTable->Currencies
             ->find()
             ->where(['id' => $currencyId])
