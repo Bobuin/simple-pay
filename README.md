@@ -4,6 +4,12 @@ A demo payment system applications based on [CakePHP](https://cakephp.org) 3.x.
 
 Please read usage [documentation](https://github.com/Bobuin/simple-pay/blob/master/code/README.md).
 
+## Requirements
+
+PHP 7.1
+
+MySQL 5.6+
+
 ## Installation
 
 Install Vagrant (for local usage).
