@@ -138,7 +138,7 @@ class WalletsController extends AppController
         /** @var array $data */
         $data = $this->request->getData();
 
-        if (empty($data)) {
+        if (empty($data) || $data['amount'] <= 0) {
             throw new BadRequestException(__('Wrong request data.'));
         }
 

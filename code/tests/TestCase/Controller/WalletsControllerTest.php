@@ -117,6 +117,52 @@ class WalletsControllerTest extends IntegrationTestCase
     }
 
     /**
+     * Test addFund method
+     *
+     * @throws \PHPUnit\Exception
+     */
+    public function testAddFundsWrongAmount(): void
+    {
+        $this->configRequest([
+            'headers' => [
+                'Accept' => 'application/json',
+                'Content-Type' => 'application/json',
+            ],
+        ]);
+
+        $data = [
+            'wallet_id' => 1,
+            'amount' => 0,
+        ];
+
+        $this->post('/wallets/add-funds', json_encode($data));
+
+        $this->assertResponseError();
+        $this->assertResponseCode(400);
+        $this->assertResponseContains('Wrong request data.');
+
+        $this->configRequest([
+            'headers' => [
+                'Accept' => 'application/json',
+                'Content-Type' => 'application/json',
+            ],
+        ]);
+
+        $data = [
+            'wallet_id' => 1,
+            'amount' => -100,
+        ];
+
+        $this->post('/wallets/add-funds', json_encode($data));
+
+        $this->assertResponseError();
+        $this->assertResponseCode(400);
+        $this->assertResponseContains('Wrong request data.');
+    }
+
+    /**
+     * Test addFund method
+     *
      * @throws \PHPUnit\Exception
      */
     public function testAddFunds(): void
@@ -184,6 +230,34 @@ class WalletsControllerTest extends IntegrationTestCase
     }
 
     /**
+     * @throws \PHPUnit\Exception
+     */
+    public function testTransferWrongAmount(): void
+    {
+        $this->configRequest([
+            'headers' => [
+                'Accept' => 'application/json',
+                'Content-Type' => 'application/json',
+            ],
+        ]);
+
+        $data = [
+            'from_wallet_id' => 1,
+            'to_wallet_id' => 2,
+            'amount' => 200,
+            'transfer_currency' => 'sender',
+        ];
+
+        $this->post('wallets/transfer', json_encode($data));
+
+        $this->assertResponseError();
+        $this->assertResponseCode(400);
+        $this->assertResponseContains('Not enough funds on wallet to make transfer.');
+    }
+
+    /**
+     * Test transfer method
+     *
      * @throws \PHPUnit\Exception
      */
     public function testTransfer(): void
