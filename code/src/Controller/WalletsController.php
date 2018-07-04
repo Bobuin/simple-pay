@@ -181,7 +181,11 @@ class WalletsController extends AppController
             throw new BadRequestException(__('Wrong request data.'));
         }
 
-        $wallets = (new WalletLogic())->transfer($data);
+        try {
+            $wallets = (new WalletLogic())->transfer($data);
+        } catch (\InvalidArgumentException $exception) {
+            throw new BadRequestException($exception->getMessage());
+        }
 
         $this->set('wallets', $wallets);
         $this->set('_serialize', ['wallets']);
