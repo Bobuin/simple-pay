@@ -66,6 +66,7 @@ class WalletLogic
      * @param array $data Funds transfer data: sender, receiver, amount
      *
      * @return Wallet[]
+     * @throws \InvalidArgumentException
      * @throws \Cake\Http\Exception\BadRequestException
      */
     public function transfer($data): array
@@ -116,6 +117,12 @@ class WalletLogic
             default:
                 throw
                 new BadRequestException('Wrong "transfer_currency" value. It can be "sender" or "receiver".');
+        }
+
+        // Check that balance is enough
+        $difference = $senderWallet->balance - $senderAmount;
+        if ($difference < 0) {
+            throw new \InvalidArgumentException('Not enough funds on wallet to make transfer.');
         }
 
         // Take from sender

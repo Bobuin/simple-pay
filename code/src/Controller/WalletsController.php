@@ -166,6 +166,7 @@ class WalletsController extends AppController
      * Transfer funds method
      *
      * @return \Cake\Http\Response|null|void
+     * @throws \InvalidArgumentException
      * @throws \Cake\Http\Exception\MethodNotAllowedException
      * @throws \Cake\Http\Exception\BadRequestException
      */
