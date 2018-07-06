@@ -174,9 +174,14 @@ class TransactionsController extends AppController
         $reports = (new ReportLogic())->getReport($data)->toArray();
 
         $delimiter = ',';
+
         $outputFileName = 'Report-' . date('YmdHis') . '.csv';
-        /** @var resource $tempMemory */
-        $tempMemory = fopen('php://memory', 'wb');
+        $filePath = TMP . $outputFileName;
+        $tempFile = fopen($filePath, 'wb+');
+
+        if (!$tempFile) {
+            throw new \InvalidArgumentException('Can\'t create report file.');
+        }
 
         $headLine = [
             'id' => 'Transaction ID',
@@ -187,7 +192,7 @@ class TransactionsController extends AppController
         ];
 
         // use the default csv handler
-        fputcsv($tempMemory, $headLine, $delimiter);
+        fputcsv($tempFile, $headLine, $delimiter);
 
         // loop through the array
         foreach ($reports as $operation) {
@@ -200,10 +205,10 @@ class TransactionsController extends AppController
             ];
 
             // use the default csv handler
-            fputcsv($tempMemory, $line, $delimiter);
+            fputcsv($tempFile, $line, $delimiter);
         }
 
-        fseek($tempMemory, 0);
+        fclose($tempFile);
 
         // modify the header to be CSV format
         $this->response = $this->response->withHeader('Content-Type', 'application/csv');
@@ -213,7 +218,9 @@ class TransactionsController extends AppController
         );
 
         // output the file to be downloaded
-        fpassthru($tempMemory);
+        $this->response->withFile($filePath, ['download' => true]);
+
+        unlink($filePath);
 
         return $this->response;
     }

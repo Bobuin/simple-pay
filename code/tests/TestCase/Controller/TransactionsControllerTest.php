@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace App\Test\TestCase\Controller;
 
@@ -126,6 +127,8 @@ class TransactionsControllerTest extends IntegrationTestCase
     }
 
     /**
+     * Test download method
+     *
      * @throws \PHPUnit\Exception
      */
     public function testDownloadWithDate(): void
@@ -152,5 +155,6 @@ class TransactionsControllerTest extends IntegrationTestCase
         $this->post('/reports/download/1', $data);
 
         $this->assertResponseOk();
+        $this->assertResponseContains('bla');
     }
 }

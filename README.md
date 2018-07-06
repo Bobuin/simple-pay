@@ -6,7 +6,7 @@ Please read usage [documentation](https://github.com/Bobuin/simple-pay/blob/mast
 
 ## Requirements
 
-PHP 7.1
+PHP 7.1+
 
 MySQL 5.6+
 

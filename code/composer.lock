@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a857211546a5a46afb5ef3a6da326df7",
+  "content-hash": "663c687fa454c56fdf730edc7e5e0c0b",
     "packages": [
         {
             "name": "aura/intl",
@@ -653,6 +653,86 @@
             "time": "2018-06-03T13:13:04+00:00"
         },
         {
+          "name": "moneyphp/money",
+          "version": "v3.1.3",
+          "source": {
+            "type": "git",
+            "url": "https://github.com/moneyphp/money.git",
+            "reference": "5e6a3c98ba2cb190d48d35656967eacf30716034"
+          },
+          "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/moneyphp/money/zipball/5e6a3c98ba2cb190d48d35656967eacf30716034",
+            "reference": "5e6a3c98ba2cb190d48d35656967eacf30716034",
+            "shasum": ""
+          },
+          "require": {
+            "php": ">=5.6"
+          },
+          "require-dev": {
+            "cache/taggable-cache": "^0.4.0",
+            "doctrine/instantiator": "^1.0.5",
+            "ext-bcmath": "*",
+            "ext-gmp": "*",
+            "ext-intl": "*",
+            "florianv/swap": "^3.0",
+            "leanphp/phpspec-code-coverage": "^3.0 || ^4.0",
+            "moneyphp/iso-currencies": "^3.0",
+            "php-http/message": "^1.4",
+            "php-http/mock-client": "^0.3.3",
+            "phpspec/phpspec": "^3.0",
+            "phpunit/phpunit": "^5",
+            "psr/cache": "^1.0",
+            "sllh/php-cs-fixer-styleci-bridge": "^2.1",
+            "symfony/phpunit-bridge": "^4"
+          },
+          "suggest": {
+            "ext-bcmath": "Calculate without integer limits",
+            "ext-gmp": "Calculate without integer limits",
+            "ext-intl": "Format Money objects with intl",
+            "florianv/swap": "Exchange rates library for PHP",
+            "psr/cache-implementation": "Used for Currency caching"
+          },
+          "type": "library",
+          "extra": {
+            "branch-alias": {
+              "dev-master": "3.0-dev"
+            }
+          },
+          "autoload": {
+            "psr-4": {
+              "Money\\": "src/"
+            }
+          },
+          "notification-url": "https://packagist.org/downloads/",
+          "license": [
+            "MIT"
+          ],
+          "authors": [
+            {
+              "name": "Mathias Verraes",
+              "email": "mathias@verraes.net",
+              "homepage": "http://verraes.net"
+            },
+            {
+              "name": "Frederik Bosch",
+              "email": "f.bosch@genkgo.nl"
+            },
+            {
+              "name": "Márk Sági-Kazár",
+              "email": "mark.sagi-kazar@gmail.com"
+            }
+          ],
+          "description": "PHP implementation of Fowler's Money pattern",
+          "homepage": "http://verraes.net/2011/04/fowler-money-pattern-in-php/",
+          "keywords": [
+            "Value Object",
+            "money",
+            "vo"
+          ],
+          "time": "2018-02-16T11:04:16+00:00"
+        },
+      {
             "name": "neomerx/json-api",
             "version": "v1.0.9",
             "source": {
@@ -3427,16 +3507,16 @@
         },
         {
             "name": "phpstan/phpstan",
-            "version": "0.10",
+          "version": "0.10.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpstan/phpstan.git",
-                "reference": "86b9f9a4421d282f3c18e0d4d1426f330c1ef21d"
+              "reference": "3179cf27542e9e47acb548150e7ca21ca5ab92d6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/86b9f9a4421d282f3c18e0d4d1426f330c1ef21d",
-                "reference": "86b9f9a4421d282f3c18e0d4d1426f330c1ef21d",
+              "url": "https://api.github.com/repos/phpstan/phpstan/zipball/3179cf27542e9e47acb548150e7ca21ca5ab92d6",
+              "reference": "3179cf27542e9e47acb548150e7ca21ca5ab92d6",
                 "shasum": ""
             },
             "require": {
@@ -3462,6 +3542,7 @@
                 "ext-zip": "*",
                 "jakub-onderka/php-parallel-lint": "^1.0",
                 "phing/phing": "^2.16.0",
+              "phpstan/phpstan-deprecation-rules": "^0.10.2",
                 "phpstan/phpstan-php-parser": "^0.10",
                 "phpstan/phpstan-phpunit": "^0.10",
                 "phpstan/phpstan-strict-rules": "^0.10",
@@ -3490,7 +3571,7 @@
                 "MIT"
             ],
             "description": "PHPStan - PHP Static Analysis Tool",
-            "time": "2018-06-24T17:49:58+00:00"
+          "time": "2018-07-01T18:22:12+00:00"
         },
         {
             "name": "phpunit/php-code-coverage",
@@ -3743,16 +3824,16 @@
         },
         {
             "name": "phpunit/phpunit",
-            "version": "6.5.8",
+          "version": "6.5.9",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "4f21a3c6b97c42952fd5c2837bb354ec0199b97b"
+              "reference": "093ca5508174cd8ab8efe44fd1dde447adfdec8f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/4f21a3c6b97c42952fd5c2837bb354ec0199b97b",
-                "reference": "4f21a3c6b97c42952fd5c2837bb354ec0199b97b",
+              "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/093ca5508174cd8ab8efe44fd1dde447adfdec8f",
+              "reference": "093ca5508174cd8ab8efe44fd1dde447adfdec8f",
                 "shasum": ""
             },
             "require": {
@@ -3823,7 +3904,7 @@
                 "testing",
                 "xunit"
             ],
-            "time": "2018-04-10T11:38:34+00:00"
+          "time": "2018-07-03T06:40:40+00:00"
         },
         {
             "name": "phpunit/phpunit-mock-objects",
@@ -3962,12 +4043,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Roave/SecurityAdvisories.git",
-                "reference": "0e4ea9f9e1fd3c6a563524f8f399696d98c7c85a"
+              "reference": "0253937ef2720f45fbe421e3ba486587b3080c35"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/0e4ea9f9e1fd3c6a563524f8f399696d98c7c85a",
-                "reference": "0e4ea9f9e1fd3c6a563524f8f399696d98c7c85a",
+              "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/0253937ef2720f45fbe421e3ba486587b3080c35",
+              "reference": "0253937ef2720f45fbe421e3ba486587b3080c35",
                 "shasum": ""
             },
             "conflict": {
@@ -4018,7 +4099,7 @@
                 "laravel/socialite": ">=1,<1.0.99|>=2,<2.0.10",
                 "magento/magento1ce": ">=1.5.0.1,<1.9.3.2",
                 "magento/magento1ee": ">=1.9,<1.14.3.2",
-                "magento/magento2ce": ">=2,<2.2",
+              "magento/product-community-edition": ">=2,<2.2.5",
                 "monolog/monolog": ">=1.8,<1.12",
                 "namshi/jose": "<2.2",
                 "onelogin/php-saml": "<2.10.4",
@@ -4069,7 +4150,7 @@
                 "symfony/web-profiler-bundle": ">=2,<2.3.19|>=2.4,<2.4.9|>=2.5,<2.5.4",
                 "symfony/yaml": ">=2,<2.0.22|>=2.1,<2.1.7",
                 "thelia/backoffice-default-template": ">=2.1,<2.1.2",
-                "thelia/thelia": ">=2.1,<2.1.2|>=2.1.0-beta1,<2.1.3",
+              "thelia/thelia": ">=2.1.0-beta1,<2.1.3|>=2.1,<2.1.2",
                 "titon/framework": ">=0,<9.9.99",
                 "twig/twig": "<1.20",
                 "typo3/cms": ">=6.2,<6.2.30|>=7,<7.6.22|>=8,<8.7.5",
@@ -4121,7 +4202,7 @@
                 }
             ],
             "description": "Prevents installation of composer packages with known security vulnerabilities: no API, simply require it",
-            "time": "2018-06-08T09:55:50+00:00"
+          "time": "2018-07-04T05:48:21+00:00"
         },
         {
             "name": "sebastian/code-unit-reverse-lookup",
@@ -5300,16 +5381,16 @@
         },
         {
             "name": "wyrihaximus/twig-view",
-            "version": "4.3.4",
+          "version": "4.3.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/WyriHaximus/TwigView.git",
-                "reference": "95977a9e22745fa8a5226a7be5850c6ca2e3ebe3"
+              "reference": "ec2771e6a1fe799f9b16eff19da424cd04d593b7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/WyriHaximus/TwigView/zipball/95977a9e22745fa8a5226a7be5850c6ca2e3ebe3",
-                "reference": "95977a9e22745fa8a5226a7be5850c6ca2e3ebe3",
+              "url": "https://api.github.com/repos/WyriHaximus/TwigView/zipball/ec2771e6a1fe799f9b16eff19da424cd04d593b7",
+              "reference": "ec2771e6a1fe799f9b16eff19da424cd04d593b7",
                 "shasum": ""
             },
             "require": {
@@ -5354,7 +5435,7 @@
                 "twig",
                 "view"
             ],
-            "time": "2018-04-16T20:29:21+00:00"
+          "time": "2018-07-03T15:46:29+00:00"
         }
     ],
     "aliases": [],

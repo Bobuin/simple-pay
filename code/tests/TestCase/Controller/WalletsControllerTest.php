@@ -272,7 +272,7 @@ class WalletsControllerTest extends IntegrationTestCase
         $data = [
             'from_wallet_id' => 1,
             'to_wallet_id' => 2,
-            'amount' => 100,
+            'amount' => 1,
             'transfer_currency' => 'sender',
         ];
 

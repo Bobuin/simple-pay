@@ -13,7 +13,7 @@ Vagrant.configure("2") do |config|
 	config.vm.box = "debian/contrib-jessie64"
 	config.vm.provider "virtualbox" do |v|
     	    v.memory = 1024*2
-    	    v.cpus = 1
+    	    v.cpus = 2
 			v.name = "simplepay"
 			v.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
 			v.customize ["modifyvm", :id, "--cableconnected1", "on"]
