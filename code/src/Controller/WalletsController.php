@@ -8,6 +8,7 @@ use App\Logic\WalletLogic;
 use App\Model\Entity\Wallet;
 use Cake\Datasource\ResultSetInterface;
 use Cake\Http\Exception\BadRequestException;
+use Cake\Http\Exception\NotImplementedException;
 
 /**
  * Wallets Controller
@@ -26,12 +27,7 @@ class WalletsController extends AppController
      */
     public function index()
     {
-        $this->paginate = [
-            'contain' => ['Currencies'],
-        ];
-        $wallets = $this->paginate($this->Wallets);
-
-        $this->set(compact('wallets'));
+        throw new NotImplementedException('Method is not implemented.');
     }
 
     /**
@@ -44,11 +40,7 @@ class WalletsController extends AppController
      */
     public function view($id = null)
     {
-        $wallet = $this->Wallets->get($id, [
-            'contain' => ['Currencies', 'Transactions', 'Users'],
-        ]);
-
-        $this->set('wallet', $wallet);
+        throw new NotImplementedException('Method is not implemented.');
     }
 
     /**
@@ -58,20 +50,7 @@ class WalletsController extends AppController
      */
     public function add()
     {
-        $wallet = $this->Wallets->newEntity();
-        if ($this->request->is('post')) {
-            /** @var array $data */
-            $data = $this->request->getData();
-            $wallet = $this->Wallets->patchEntity($wallet, $data);
-            if ($this->Wallets->save($wallet)) {
-                $this->Flash->success(__('The wallet has been saved.'));
-
-                return $this->redirect(['action' => 'index']);
-            }
-            $this->Flash->error(__('The wallet could not be saved. Please, try again.'));
-        }
-        $currency = $this->Wallets->Currencies->find('list', ['limit' => 200]);
-        $this->set(compact('wallet', 'currency'));
+        throw new NotImplementedException('Method is not implemented.');
     }
 
     /**
@@ -84,22 +63,7 @@ class WalletsController extends AppController
      */
     public function edit($id = null)
     {
-        $wallet = $this->Wallets->get($id, [
-            'contain' => [],
-        ]);
-        if ($this->request->is(['patch', 'post', 'put'])) {
-            /** @var array $data */
-            $data = $this->request->getData();
-            $wallet = $this->Wallets->patchEntity($wallet, $data);
-            if ($this->Wallets->save($wallet)) {
-                $this->Flash->success(__('The wallet has been saved.'));
-
-                return $this->redirect(['action' => 'index']);
-            }
-            $this->Flash->error(__('The wallet could not be saved. Please, try again.'));
-        }
-        $currency = $this->Wallets->Currencies->find('list', ['limit' => 200]);
-        $this->set(compact('wallet', 'currency'));
+        throw new NotImplementedException('Method is not implemented.');
     }
 
     /**
@@ -113,15 +77,7 @@ class WalletsController extends AppController
      */
     public function delete($id = null)
     {
-        $this->request->allowMethod(['post', 'delete']);
-        $wallet = $this->Wallets->get($id);
-        if ($this->Wallets->delete($wallet)) {
-            $this->Flash->success(__('The wallet has been deleted.'));
-        } else {
-            $this->Flash->error(__('The wallet could not be deleted. Please, try again.'));
-        }
-
-        return $this->redirect(['action' => 'index']);
+        throw new NotImplementedException('Method is not implemented.');
     }
 
     /**

@@ -6,6 +6,7 @@ namespace App\Controller;
 use App\Logic\ReportLogic;
 use App\Model\Entity\Transaction;
 use Cake\Datasource\ResultSetInterface;
+use Cake\Http\Exception\NotImplementedException;
 use Cake\Http\Response;
 use Cake\I18n\Time;
 
@@ -26,12 +27,7 @@ class TransactionsController extends AppController
      */
     public function index()
     {
-        $this->paginate = [
-            'contain' => ['Wallets'],
-        ];
-        $transactions = $this->paginate($this->Transactions);
-
-        $this->set(compact('transactions'));
+        throw new NotImplementedException('Method is not implemented.');
     }
 
     /**
@@ -44,11 +40,7 @@ class TransactionsController extends AppController
      */
     public function view($id = null)
     {
-        $transaction = $this->Transactions->get($id, [
-            'contain' => ['Wallets'],
-        ]);
-
-        $this->set('transaction', $transaction);
+        throw new NotImplementedException('Method is not implemented.');
     }
 
     /**
@@ -58,20 +50,7 @@ class TransactionsController extends AppController
      */
     public function add()
     {
-        $transaction = $this->Transactions->newEntity();
-        if ($this->request->is('post')) {
-            /** @var array $data */
-            $data = $this->request->getData();
-            $transaction = $this->Transactions->patchEntity($transaction, $data);
-            if ($this->Transactions->save($transaction)) {
-                $this->Flash->success(__('The transaction has been saved.'));
-
-                return $this->redirect(['action' => 'index']);
-            }
-            $this->Flash->error(__('The transaction could not be saved. Please, try again.'));
-        }
-        $wallets = $this->Transactions->Wallets->find('list', ['limit' => 200]);
-        $this->set(compact('transaction', 'wallets'));
+        throw new NotImplementedException('Method is not implemented.');
     }
 
     /**
@@ -84,22 +63,7 @@ class TransactionsController extends AppController
      */
     public function edit($id = null)
     {
-        $transaction = $this->Transactions->get($id, [
-            'contain' => [],
-        ]);
-        if ($this->request->is(['patch', 'post', 'put'])) {
-            /** @var array $data */
-            $data = $this->request->getData();
-            $transaction = $this->Transactions->patchEntity($transaction, $data);
-            if ($this->Transactions->save($transaction)) {
-                $this->Flash->success(__('The transaction has been saved.'));
-
-                return $this->redirect(['action' => 'index']);
-            }
-            $this->Flash->error(__('The transaction could not be saved. Please, try again.'));
-        }
-        $wallets = $this->Transactions->Wallets->find('list', ['limit' => 200]);
-        $this->set(compact('transaction', 'wallets'));
+        throw new NotImplementedException('Method is not implemented.');
     }
 
     /**
@@ -113,15 +77,7 @@ class TransactionsController extends AppController
      */
     public function delete($id = null)
     {
-        $this->request->allowMethod(['post', 'delete']);
-        $transaction = $this->Transactions->get($id);
-        if ($this->Transactions->delete($transaction)) {
-            $this->Flash->success(__('The transaction has been deleted.'));
-        } else {
-            $this->Flash->error(__('The transaction could not be deleted. Please, try again.'));
-        }
-
-        return $this->redirect(['action' => 'index']);
+        throw new NotImplementedException('Method is not implemented.');
     }
 
     /**

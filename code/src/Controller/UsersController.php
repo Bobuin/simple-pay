@@ -6,6 +6,7 @@ namespace App\Controller;
 use App\Logic\UserLogic;
 use App\Model\Entity\User;
 use Cake\Datasource\ResultSetInterface;
+use Cake\Http\Exception\NotImplementedException;
 
 /**
  * Users Controller
@@ -81,22 +82,7 @@ class UsersController extends AppController
      */
     public function edit($id = null)
     {
-        $user = $this->Users->get($id, [
-            'contain' => [],
-        ]);
-        if ($this->request->is(['patch', 'post', 'put'])) {
-            /** @var array $data */
-            $data = $this->request->getData();
-            $user = $this->Users->patchEntity($user, $data);
-            if ($this->Users->save($user)) {
-                $this->Flash->success(__('The user has been saved.'));
-
-                return $this->redirect(['action' => 'index']);
-            }
-            $this->Flash->error(__('The user could not be saved. Please, try again.'));
-        }
-        $wallets = $this->Users->Wallets->find('list', ['limit' => 200]);
-        $this->set(compact('user', 'wallets'));
+        throw new NotImplementedException('Method is not implemented.');
     }
 
     /**
@@ -110,14 +96,6 @@ class UsersController extends AppController
      */
     public function delete($id = null)
     {
-        $this->request->allowMethod(['post', 'delete']);
-        $user = $this->Users->get($id);
-        if ($this->Users->delete($user)) {
-            $this->Flash->success(__('The user has been deleted.'));
-        } else {
-            $this->Flash->error(__('The user could not be deleted. Please, try again.'));
-        }
-
-        return $this->redirect(['action' => 'index']);
+        throw new NotImplementedException('Method is not implemented.');
     }
 }

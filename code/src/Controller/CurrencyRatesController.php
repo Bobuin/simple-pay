@@ -6,6 +6,7 @@ namespace App\Controller;
 use App\Logic\CurrencyRatesLogic;
 use App\Model\Entity\CurrencyRate;
 use Cake\Datasource\ResultSetInterface;
+use Cake\Http\Exception\NotImplementedException;
 
 /**
  * CurrencyRates Controller
@@ -43,11 +44,7 @@ class CurrencyRatesController extends AppController
      */
     public function view($id = null)
     {
-        $currencyRate = $this->CurrencyRates->get($id, [
-            'contain' => ['Currencies'],
-        ]);
-
-        $this->set('currencyRate', $currencyRate);
+        throw new NotImplementedException('Method is not implemented.');
     }
 
     /**
@@ -82,22 +79,7 @@ class CurrencyRatesController extends AppController
      */
     public function edit($id = null)
     {
-        $currencyRate = $this->CurrencyRates->get($id, [
-            'contain' => [],
-        ]);
-        if ($this->request->is(['patch', 'post', 'put'])) {
-            /** @var array $data */
-            $data = $this->request->getData();
-            $currencyRate = $this->CurrencyRates->patchEntity($currencyRate, $data);
-            if ($this->CurrencyRates->save($currencyRate)) {
-                $this->Flash->success(__('The currency rate has been saved.'));
-
-                return $this->redirect(['action' => 'index']);
-            }
-            $this->Flash->error(__('The currency rate could not be saved. Please, try again.'));
-        }
-        $currencies = $this->CurrencyRates->Currencies->find('list', ['limit' => 200]);
-        $this->set(compact('currencyRate', 'currencies'));
+        throw new NotImplementedException('Method is not implemented.');
     }
 
     /**
@@ -111,14 +93,6 @@ class CurrencyRatesController extends AppController
      */
     public function delete($id = null)
     {
-        $this->request->allowMethod(['post', 'delete']);
-        $currencyRate = $this->CurrencyRates->get($id);
-        if ($this->CurrencyRates->delete($currencyRate)) {
-            $this->Flash->success(__('The currency rate has been deleted.'));
-        } else {
-            $this->Flash->error(__('The currency rate could not be deleted. Please, try again.'));
-        }
-
-        return $this->redirect(['action' => 'index']);
+        throw new NotImplementedException('Method is not implemented.');
     }
 }
